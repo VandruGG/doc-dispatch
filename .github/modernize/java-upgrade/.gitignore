@@ -1,0 +1,27 @@
+# Maven
+target/
+
+# Base de datos local
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuración sensible/local
+config/
+.env
+*.properties.local
+
+# Logs
+logs/
+LOGS/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
