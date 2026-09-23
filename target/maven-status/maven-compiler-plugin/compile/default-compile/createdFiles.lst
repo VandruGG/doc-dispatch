@@ -1,3 +1,4 @@
 com\vandrugg\docdispatch\enums\EstadoEnvio.class
 com\vandrugg\docdispatch\model\ResultadoEnvio.class
 com\vandrugg\docdispatch\config\Constantes.class
+com\vandrugg\docdispatch\repository\RepositorioDestinatarios.class
