@@ -102,4 +102,19 @@ public class RepositorioDestinatariosTest {
                 destinatarios.get(0));
     }
 
+    @Test
+    void noDebeDuplicarElMismoDestinatario() {
+        repositorio.guardarDestinatario(
+                166,
+                "correo1@example.com");
+
+        repositorio.guardarDestinatario(
+                166,
+                "correo1@example.com");
+
+        List<String> destinatarios = repositorio.obtenerDestinatarios(166);
+
+        assertEquals(1, destinatarios.size());
+    }
+
 }
