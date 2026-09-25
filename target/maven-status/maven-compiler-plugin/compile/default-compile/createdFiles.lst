@@ -4,4 +4,5 @@ com\vandrugg\docdispatch\config\Constantes.class
 com\vandrugg\docdispatch\enums\EstadoEnvio.class
 com\vandrugg\docdispatch\Main.class
 com\vandrugg\docdispatch\database\DatabaseManager.class
+com\vandrugg\docdispatch\ui\MenuDestinatarios.class
 com\vandrugg\docdispatch\repository\RepositorioDestinatarios.class

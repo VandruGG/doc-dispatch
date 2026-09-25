@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,108 +14,135 @@ import com.vandrugg.docdispatch.database.DatabaseManager;
 
 public class RepositorioDestinatariosTest {
 
-    private RepositorioDestinatarios repositorio;
+        private RepositorioDestinatarios repositorio;
 
-    @BeforeEach
-    void setUp(@TempDir Path carpetaTemporal) {
+        @BeforeEach
+        void setUp(@TempDir Path carpetaTemporal) {
 
-        Path archivoDb = carpetaTemporal.resolve("test.db");
+                Path archivoDb = carpetaTemporal.resolve("test.db");
 
-        DatabaseManager databaseManager = new DatabaseManager(
-                "jdbc:sqlite:" + archivoDb);
+                DatabaseManager databaseManager = new DatabaseManager(
+                                "jdbc:sqlite:" + archivoDb);
 
-        databaseManager.inicializarBaseDeDatos();
+                databaseManager.inicializarBaseDeDatos();
 
-        repositorio = new RepositorioDestinatarios(databaseManager);
-    }
+                repositorio = new RepositorioDestinatarios(databaseManager);
+        }
 
-    @Test
-    void debeGuardarYObtenerDestinatario() {
+        @Test
+        void debeGuardarYObtenerDestinatario() {
 
-        repositorio.guardarDestinatario(
-                166,
-                "correo1@example.com");
+                repositorio.guardarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        List<String> destinatarios = repositorio.obtenerDestinatarios(166);
+                List<String> destinatarios = repositorio.obtenerDestinatarios(166);
 
-        assertEquals(1, destinatarios.size());
-        assertEquals("correo1@example.com", destinatarios.get(0));
-    }
+                assertEquals(1, destinatarios.size());
+                assertEquals("correo1@example.com", destinatarios.get(0));
+        }
 
-    @Test
-    void debePermitirVariosCorreosParaElMismoDocumento() {
+        @Test
+        void debePermitirVariosCorreosParaElMismoDocumento() {
 
-        repositorio.guardarDestinatario(
-                166,
-                "correo1@example.com");
+                repositorio.guardarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        repositorio.guardarDestinatario(
-                166,
-                "correo2@example.com");
+                repositorio.guardarDestinatario(
+                                166,
+                                "correo2@example.com");
 
-        List<String> destinatarios = repositorio.obtenerDestinatarios(166);
+                List<String> destinatarios = repositorio.obtenerDestinatarios(166);
 
-        assertEquals(2, destinatarios.size());
-        assertTrue(
-                destinatarios.contains(
-                        "correo1@example.com"));
-        assertTrue(
-                destinatarios.contains(
-                        "correo2@example.com"));
-    }
+                assertEquals(2, destinatarios.size());
+                assertTrue(
+                                destinatarios.contains(
+                                                "correo1@example.com"));
+                assertTrue(
+                                destinatarios.contains(
+                                                "correo2@example.com"));
+        }
 
-    @Test
-    void debeDesactivarDestinatario() {
+        @Test
+        void debeDesactivarDestinatario() {
 
-        repositorio.guardarDestinatario(
-                166,
-                "correo1@example.com");
+                repositorio.guardarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        repositorio.eliminarDestinatario(
-                166,
-                "correo1@example.com");
+                repositorio.eliminarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        List<String> destinatarios = repositorio.obtenerDestinatarios(166);
+                List<String> destinatarios = repositorio.obtenerDestinatarios(166);
 
-        assertTrue(destinatarios.isEmpty());
-    }
+                assertTrue(destinatarios.isEmpty());
+        }
 
-    @Test
-    void debeReactivarDestinatarioExistente() {
+        @Test
+        void debeReactivarDestinatarioExistente() {
 
-        repositorio.guardarDestinatario(
-                166,
-                "correo1@example.com");
+                repositorio.guardarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        repositorio.eliminarDestinatario(
-                166,
-                "correo1@example.com");
+                repositorio.eliminarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        repositorio.guardarDestinatario(
-                166,
-                "correo1@example.com");
+                repositorio.guardarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        List<String> destinatarios = repositorio.obtenerDestinatarios(166);
+                List<String> destinatarios = repositorio.obtenerDestinatarios(166);
 
-        assertEquals(1, destinatarios.size());
-        assertEquals(
-                "correo1@example.com",
-                destinatarios.get(0));
-    }
+                assertEquals(1, destinatarios.size());
+                assertEquals(
+                                "correo1@example.com",
+                                destinatarios.get(0));
+        }
 
-    @Test
-    void noDebeDuplicarElMismoDestinatario() {
-        repositorio.guardarDestinatario(
-                166,
-                "correo1@example.com");
+        @Test
+        void noDebeDuplicarElMismoDestinatario() {
+                repositorio.guardarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        repositorio.guardarDestinatario(
-                166,
-                "correo1@example.com");
+                repositorio.guardarDestinatario(
+                                166,
+                                "correo1@example.com");
 
-        List<String> destinatarios = repositorio.obtenerDestinatarios(166);
+                List<String> destinatarios = repositorio.obtenerDestinatarios(166);
 
-        assertEquals(1, destinatarios.size());
-    }
+                assertEquals(1, destinatarios.size());
+        }
+
+        @Test
+        void noDebeGuardarNumeroDocumentoInvalido() {
+                assertThrows(
+                                IllegalArgumentException.class,
+                                () -> repositorio.guardarDestinatario(
+                                                0,
+                                                "correo@example.com"));
+        }
+
+        @Test
+        void noDebeGuardarEmailVacio() {
+                assertThrows(
+                                IllegalArgumentException.class,
+                                () -> repositorio.guardarDestinatario(
+                                                166,
+                                                ""));
+        }
+
+        @Test 
+        void noDebeGuardarEmailConFormatoInvalido() {
+                assertThrows(
+                                IllegalArgumentException.class,
+                                () -> repositorio.guardarDestinatario(
+                                                166,
+                                                "correo-invalido"));
+        }
 
 }

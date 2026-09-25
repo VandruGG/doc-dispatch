@@ -19,6 +19,10 @@ public class RepositorioDestinatarios {
     }
 
     public void guardarDestinatario(int numeroDocumento, String email) {
+        
+        validarNumeroDocumento(numeroDocumento);
+        validarEmail(email);
+        
         String sql = """
                 INSERT INTO destinatarios (numero_documento, email, activo)
                 VALUES (?, ?, 1)
@@ -39,6 +43,9 @@ public class RepositorioDestinatarios {
     }
 
     public List<String> obtenerDestinatarios(int numeroDocumento) {
+        
+        validarNumeroDocumento(numeroDocumento);
+
         String sql = """
                 SELECT email
                 FROM destinatarios
@@ -68,6 +75,10 @@ public class RepositorioDestinatarios {
     }
 
     public void eliminarDestinatario(int numeroDocumento, String email) {
+        
+        validarNumeroDocumento(numeroDocumento);
+        validarEmail(email);
+        
         String sql = """
                 UPDATE destinatarios
                 SET activo = 0
@@ -121,5 +132,27 @@ public class RepositorioDestinatarios {
         }
 
         return destinatarios;
+    }
+
+    private void validarNumeroDocumento(int numeroDocumento){
+        if(numeroDocumento <= 0){
+            throw new IllegalArgumentException(
+                "El numero de documento debe ser mayor que cero."
+            );
+        }
+    }
+
+    private void validarEmail(String email){
+        if(email == null || email.isBlank()){
+            throw new IllegalArgumentException(
+                "El email es obligatorio."
+            );
+        }
+
+        if(!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")){
+            throw new IllegalArgumentException(
+                "El formato del email no es valido."
+            );
+        }
     }
 }
