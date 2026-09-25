@@ -1,8 +1,11 @@
 package com.vandrugg.docdispatch;
 
+import java.util.Scanner;
+
 import com.vandrugg.docdispatch.database.DatabaseManager;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
 import com.vandrugg.docdispatch.ui.MenuDestinatarios;
+import com.vandrugg.docdispatch.ui.MenuPrincipal;
 
 public class Main {
 
@@ -11,15 +14,22 @@ public class Main {
         DatabaseManager databaseManager = DatabaseManager.produccion();
         databaseManager.inicializarBaseDeDatos();
 
-        RepositorioDestinatarios repositorio = new RepositorioDestinatarios(databaseManager);
+        RepositorioDestinatarios repositorioDestinatarios = new RepositorioDestinatarios(databaseManager);
 
+        try(Scanner scanner = new Scanner(System.in)) {
 
-        MenuDestinatarios menu = new MenuDestinatarios(repositorio);
-
-        menu.mostrar();
-
-        System.out.println("DecDispatch iniciado correctamente.");
-        System.out.println("Base de datos inicializado.");
-
+            MenuDestinatarios menuDestinatarios = 
+                new MenuDestinatarios(
+                    repositorioDestinatarios,
+                    scanner
+                );
+                
+            MenuPrincipal menuPrincipal = 
+                new MenuPrincipal(
+                    menuDestinatarios,
+                scanner);
+            
+            menuPrincipal.mostrar();
+        }         
     }
 }

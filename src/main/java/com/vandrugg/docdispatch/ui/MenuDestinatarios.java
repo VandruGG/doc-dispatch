@@ -1,5 +1,6 @@
 package com.vandrugg.docdispatch.ui;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,7 +12,9 @@ public class MenuDestinatarios {
     private final RepositorioDestinatarios repositorio;
     private final Scanner scanner;
 
-    public MenuDestinatarios(RepositorioDestinatarios repositorio) {
+    public MenuDestinatarios(
+            RepositorioDestinatarios repositorio,
+            Scanner scanner) {
         this.repositorio = repositorio;
         this.scanner = new Scanner(System.in);
     }
@@ -21,7 +24,7 @@ public class MenuDestinatarios {
 
         while (!salir) {
             limpiarPantalla();
-            
+
             System.out.println();
             System.out.println("=== GESTION DE DESTINATARIOS ===");
             System.out.println("1. Agregar o reactivar destinatario");
@@ -150,7 +153,7 @@ public class MenuDestinatarios {
                     .inheritIO()
                     .start()
                     .waitFor();
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
         }
     }
 }
