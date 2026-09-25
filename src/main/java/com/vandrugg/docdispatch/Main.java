@@ -3,6 +3,7 @@ package com.vandrugg.docdispatch;
 import java.util.Scanner;
 
 import com.vandrugg.docdispatch.database.DatabaseManager;
+import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
 import com.vandrugg.docdispatch.service.IdentificadorDocumento;
 import com.vandrugg.docdispatch.service.IdentificadorPorCodigo;
@@ -21,12 +22,22 @@ public class Main {
 
         RepositorioDestinatarios repositorioDestinatarios = new RepositorioDestinatarios(databaseManager);
 
+        RepositorioConfiguracion repositorioConfiguracion = new RepositorioConfiguracion(databaseManager);
+
+        String codigoDocumento = repositorioConfiguracion.obtenerCodigoDocumento();
+
+        if(codigoDocumento == null){
+            codigoDocumento = "LIQ";
+
+            repositorioConfiguracion.guardarCodigoDocumento(codigoDocumento);
+        }
+
         IdentificadorDocumento identificadorDocumento = new IdentificadorPorCodigo("LIQ");
-
+        
         ProcesadorDocumentos procesadorDocumentos = new ProcesadorDocumentos(identificadorDocumento);
-
+        
         ServicioDocumentos servicioDocumentos = new ServicioDocumentos(procesadorDocumentos);
-
+        
         try (Scanner scanner = new Scanner(System.in)) {
 
             MenuDestinatarios menuDestinatarios = new MenuDestinatarios(
