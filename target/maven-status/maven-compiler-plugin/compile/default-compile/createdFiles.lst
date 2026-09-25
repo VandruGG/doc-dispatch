@@ -1,9 +1,13 @@
+com\vandrugg\docdispatch\model\Documento.class
 com\vandrugg\docdispatch\model\ResultadoEnvio.class
-com\vandrugg\docdispatch\model\Destinatario.class
 com\vandrugg\docdispatch\config\Constantes.class
-com\vandrugg\docdispatch\ui\MenuPrincipal.class
 com\vandrugg\docdispatch\enums\EstadoEnvio.class
+com\vandrugg\docdispatch\repository\RepositorioDestinatarios.class
+com\vandrugg\docdispatch\service\IdentificadorDocumento.class
+com\vandrugg\docdispatch\model\Destinatario.class
+com\vandrugg\docdispatch\ui\MenuPrincipal.class
+com\vandrugg\docdispatch\service\ProcesadorDocumentos.class
 com\vandrugg\docdispatch\Main.class
 com\vandrugg\docdispatch\database\DatabaseManager.class
 com\vandrugg\docdispatch\ui\MenuDestinatarios.class
-com\vandrugg\docdispatch\repository\RepositorioDestinatarios.class
+com\vandrugg\docdispatch\service\IdentificadorPorCodigo.class

@@ -38,7 +38,7 @@ public final class DatabaseManager {
     }
 
     public void inicializarBaseDeDatos() {
-        String sql = """
+        String sqlDestinatarios = """
                 CREATE TABLE IF NOT EXISTS destinatarios (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     numero_documento INTEGER NOT NULL,
@@ -48,10 +48,18 @@ public final class DatabaseManager {
                 );
                 """;
 
+        String sqlConfiguracion = """
+                CREATE TABLE IF NOT EXISTS configuracion (
+                clave TEXT PRIMARY KEY,
+                valor TEXT NOT NULL
+                );
+                """;
+
         try (
                 Connection conexion = obtenerConexion();
                 Statement statement = conexion.createStatement()) {
-            statement.execute(sql);
+            statement.execute(sqlDestinatarios);
+            statement.execute(sqlConfiguracion);
 
         } catch (SQLException e) {
             throw new IllegalStateException(

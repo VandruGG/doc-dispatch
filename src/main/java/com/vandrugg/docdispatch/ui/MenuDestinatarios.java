@@ -31,7 +31,7 @@ public class MenuDestinatarios {
             System.out.println("2. Listar destinatarios");
             System.out.println("3. Buscar destinatarios por numero");
             System.out.println("4. Desactivar destinatario");
-            System.out.println("0. Salir");
+            System.out.println("0. Volver al menu principal");
             System.out.print("Seleccione una opcion: ");
 
             String opcion = scanner.nextLine().trim();

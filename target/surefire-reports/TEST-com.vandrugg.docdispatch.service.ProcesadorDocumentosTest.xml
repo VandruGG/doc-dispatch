@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.93" tests="8" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.vandrugg.docdispatch.service.ProcesadorDocumentosTest" time="0.123" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -58,12 +58,8 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="debeReactivarDestinatarioExistente" classname="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.636"/>
-  <testcase name="noDebeDuplicarElMismoDestinatario" classname="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.052"/>
-  <testcase name="noDebeGuardarNumeroDocumentoInvalido" classname="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.018"/>
-  <testcase name="debeGuardarYObtenerDestinatario" classname="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.025"/>
-  <testcase name="debeDesactivarDestinatario" classname="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.038"/>
-  <testcase name="noDebeGuardarEmailConFormatoInvalido" classname="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.015"/>
-  <testcase name="debePermitirVariosCorreosParaElMismoDocumento" classname="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.043"/>
-  <testcase name="noDebeGuardarEmailVacio" classname="com.vandrugg.docdispatch.repository.RepositorioDestinatariosTest" time="0.017"/>
+  <testcase name="debeUsarElCodigoConfigurado(Path)" classname="com.vandrugg.docdispatch.service.ProcesadorDocumentosTest" time="0.027"/>
+  <testcase name="debePermitirVariosArchivosParaElMismoNumero(Path)" classname="com.vandrugg.docdispatch.service.ProcesadorDocumentosTest" time="0.037"/>
+  <testcase name="debeDevolverListaVaciaSiNoHayDocumentosValidos(Path)" classname="com.vandrugg.docdispatch.service.ProcesadorDocumentosTest" time="0.01"/>
+  <testcase name="debeObternerDocumentosValidos(Path)" classname="com.vandrugg.docdispatch.service.ProcesadorDocumentosTest" time="0.039"/>
 </testsuite>

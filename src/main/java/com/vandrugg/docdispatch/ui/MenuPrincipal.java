@@ -6,12 +6,15 @@ import java.util.Scanner;
 public class MenuPrincipal {
 
     private final MenuDestinatarios menuDestinatarios;
+    private final MenuProcesamientoDocumentos menuProcesamientoDocumentos;
     private final Scanner scanner;
 
     public MenuPrincipal(
             MenuDestinatarios menuDestinatarios,
+            MenuProcesamientoDocumentos menuProcesamientoDocumentos,
             Scanner scanner) {
         this.menuDestinatarios = menuDestinatarios;
+        this.menuProcesamientoDocumentos = menuProcesamientoDocumentos;
         this.scanner = new Scanner(System.in);
     }
 
@@ -38,8 +41,7 @@ public class MenuPrincipal {
             switch (opcion) {
                 case "1" -> menuDestinatarios.mostrar();
 
-                case "2" -> opcionNoDisponible(
-                        "Procesamiento de documentos");
+                case "2" -> menuProcesamientoDocumentos.mostrar();
 
                 case "3" -> opcionNoDisponible(
                         "Historial de envios");
