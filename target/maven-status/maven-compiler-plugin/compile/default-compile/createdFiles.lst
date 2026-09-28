@@ -7,7 +7,9 @@ com\vandrugg\docdispatch\repository\RepositorioDestinatarios.class
 com\vandrugg\docdispatch\ui\MenuProcesamientoDocumentos.class
 com\vandrugg\docdispatch\repository\RepositorioConfiguracion.class
 com\vandrugg\docdispatch\service\IdentificadorDocumento.class
+com\vandrugg\docdispatch\service\ServicioPreparacionEnvios.class
 com\vandrugg\docdispatch\model\Destinatario.class
+com\vandrugg\docdispatch\model\PreparacionEnvio.class
 com\vandrugg\docdispatch\ui\MenuPrincipal.class
 com\vandrugg\docdispatch\service\ProcesadorDocumentos.class
 com\vandrugg\docdispatch\Main.class
