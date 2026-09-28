@@ -4,25 +4,40 @@ import java.nio.file.Path;
 import java.util.List;
 
 import com.vandrugg.docdispatch.model.Documento;
+import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 
 public class ServicioDocumentos {
 
-    private final ProcesadorDocumentos procesadorDocumentos;
+    private final RepositorioConfiguracion repositorioConfiguracion;
+
 
     public ServicioDocumentos(
-        ProcesadorDocumentos procesadorDocumentos
+        RepositorioConfiguracion repositorioConfiguracion
     ) {
 
-        if(procesadorDocumentos== null){
+        if(repositorioConfiguracion == null){
             throw new IllegalArgumentException(
-                "El procesador de documentos es obligatorio."
+                "El repositorio de configuracion es obligatorio."
             );
         }
-        this.procesadorDocumentos = procesadorDocumentos;
+        this.repositorioConfiguracion = repositorioConfiguracion;
     }
 
     public List<Documento> analizarCarpeta(Path carpeta){
-        return procesadorDocumentos.obtenerDocumentos(carpeta);
+        
+        String codigo = repositorioConfiguracion.obtenerCodigoDocumento();
+
+        if(codigo == null){
+            throw new IllegalStateException(
+                "No existe un codigo de documento configurado."
+            );
+        }
+
+        IdentificadorDocumento identificador = new IdentificadorPorCodigo(codigo); 
+
+        ProcesadorDocumentos procesador = new ProcesadorDocumentos(identificador);
+
+        return procesador.obtenerDocumentos(carpeta);
     }
 
 

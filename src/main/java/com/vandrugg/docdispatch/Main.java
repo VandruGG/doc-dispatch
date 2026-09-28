@@ -5,10 +5,8 @@ import java.util.Scanner;
 import com.vandrugg.docdispatch.database.DatabaseManager;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
-import com.vandrugg.docdispatch.service.IdentificadorDocumento;
-import com.vandrugg.docdispatch.service.IdentificadorPorCodigo;
-import com.vandrugg.docdispatch.service.ProcesadorDocumentos;
 import com.vandrugg.docdispatch.service.ServicioDocumentos;
+import com.vandrugg.docdispatch.ui.MenuConfiguracion;
 import com.vandrugg.docdispatch.ui.MenuDestinatarios;
 import com.vandrugg.docdispatch.ui.MenuPrincipal;
 import com.vandrugg.docdispatch.ui.MenuProcesamientoDocumentos;
@@ -26,18 +24,14 @@ public class Main {
 
         String codigoDocumento = repositorioConfiguracion.obtenerCodigoDocumento();
 
-        if(codigoDocumento == null){
+        if (codigoDocumento == null) {
             codigoDocumento = "LIQ";
 
             repositorioConfiguracion.guardarCodigoDocumento(codigoDocumento);
         }
 
-        IdentificadorDocumento identificadorDocumento = new IdentificadorPorCodigo("LIQ");
-        
-        ProcesadorDocumentos procesadorDocumentos = new ProcesadorDocumentos(identificadorDocumento);
-        
-        ServicioDocumentos servicioDocumentos = new ServicioDocumentos(procesadorDocumentos);
-        
+        ServicioDocumentos servicioDocumentos = new ServicioDocumentos(repositorioConfiguracion);
+
         try (Scanner scanner = new Scanner(System.in)) {
 
             MenuDestinatarios menuDestinatarios = new MenuDestinatarios(
@@ -48,12 +42,17 @@ public class Main {
                     servicioDocumentos,
                     scanner);
 
+            MenuConfiguracion menuConfiguracion = new MenuConfiguracion(
+                    repositorioConfiguracion,
+                    scanner);
+
             MenuPrincipal menuPrincipal = new MenuPrincipal(
                     menuDestinatarios,
                     menuProcesamientoDocumentos,
+                    menuConfiguracion,
                     scanner);
 
-            menuPrincipal.mostrar();
+            menuPrincipal.mostrar();            
         }
     }
 }
