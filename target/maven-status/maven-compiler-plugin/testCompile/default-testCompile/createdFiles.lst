@@ -1,3 +1,4 @@
+com\vandrugg\docdispatch\service\ServicioPreparacionEnviosTest$ServicioCorreoFalso.class
 com\vandrugg\docdispatch\repository\RepositorioDestinatariosTest.class
 com\vandrugg\docdispatch\service\ProcesadorDocumentosTest.class
 com\vandrugg\docdispatch\service\IdentificadorPorCodigoTest.class

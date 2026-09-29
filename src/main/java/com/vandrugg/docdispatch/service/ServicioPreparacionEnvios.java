@@ -7,21 +7,31 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.vandrugg.docdispatch.model.Documento;
+import com.vandrugg.docdispatch.model.ResultadoEnvio;
 import com.vandrugg.docdispatch.model.PreparacionEnvio;
 import com.vandrugg.docdispatch.model.ResultadoSimulacion;
+import com.vandrugg.docdispatch.enums.EstadoEnvio;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
 
 public class ServicioPreparacionEnvios {
 
     private final ServicioDocumentos servicioDocumentos;
+    private final ServicioCorreo servicioCorreo;
     private final RepositorioDestinatarios repositorioDestinatarios;
 
     public ServicioPreparacionEnvios(
             ServicioDocumentos servicioDocumentos,
-            RepositorioDestinatarios repositorioDestinatarios) {
+            RepositorioDestinatarios repositorioDestinatarios,
+            ServicioCorreo servicioCorreo) {
+
         if (servicioDocumentos == null) {
             throw new IllegalArgumentException(
                     "El servicio de documentos es obligatorio.");
+        }
+
+        if (servicioCorreo == null) {
+            throw new IllegalArgumentException(
+                    "El servicio de correo es obligatorio.");
         }
 
         if (repositorioDestinatarios == null) {
@@ -31,6 +41,7 @@ public class ServicioPreparacionEnvios {
 
         this.servicioDocumentos = servicioDocumentos;
         this.repositorioDestinatarios = repositorioDestinatarios;
+        this.servicioCorreo = servicioCorreo;
     }
 
     public List<PreparacionEnvio> preparar(Path carpeta) {
@@ -98,6 +109,36 @@ public class ServicioPreparacionEnvios {
                             preparacion.destinatarios().size(),
                             listo,
                             detalle));
+        }
+
+        return resultados;
+    }
+
+    public List<ResultadoEnvio> enviar(Path carpeta) {
+
+        List<PreparacionEnvio> preparaciones = preparar(carpeta);
+
+        List<ResultadoEnvio> resultados = new ArrayList<>();
+
+        for (PreparacionEnvio preparacion : preparaciones) {
+
+            if (!preparacion.tieneDestinatarios()) {
+                resultados.add(
+                        new ResultadoEnvio(
+                                EstadoEnvio.SIN_DESTINATARIO,
+                                "Documento "
+                                        + preparacion.numeroDocumento()
+                                        + ": sin destinatarios configurados."));
+                continue;
+            }
+
+            List<Path> adjuntos = preparacion.documentos().stream().map(Documento::ruta).toList();
+
+            ResultadoEnvio resultado = servicioCorreo.enviar(
+                    preparacion.destinatarios(),
+                    adjuntos);
+
+            resultados.add(resultado);
         }
 
         return resultados;
