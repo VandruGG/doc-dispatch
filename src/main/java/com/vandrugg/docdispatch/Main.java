@@ -6,6 +6,7 @@ import com.vandrugg.docdispatch.database.DatabaseManager;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
 import com.vandrugg.docdispatch.service.ServicioDocumentos;
+import com.vandrugg.docdispatch.service.ServicioPreparacionEnvios;
 import com.vandrugg.docdispatch.ui.MenuConfiguracion;
 import com.vandrugg.docdispatch.ui.MenuDestinatarios;
 import com.vandrugg.docdispatch.ui.MenuPrincipal;
@@ -32,6 +33,10 @@ public class Main {
 
         ServicioDocumentos servicioDocumentos = new ServicioDocumentos(repositorioConfiguracion);
 
+        ServicioPreparacionEnvios servicioPreparacionEnvios = new ServicioPreparacionEnvios(
+                servicioDocumentos,
+                repositorioDestinatarios);
+
         try (Scanner scanner = new Scanner(System.in)) {
 
             MenuDestinatarios menuDestinatarios = new MenuDestinatarios(
@@ -39,7 +44,7 @@ public class Main {
                     scanner);
 
             MenuProcesamientoDocumentos menuProcesamientoDocumentos = new MenuProcesamientoDocumentos(
-                    servicioDocumentos,
+                    servicioPreparacionEnvios,
                     scanner);
 
             MenuConfiguracion menuConfiguracion = new MenuConfiguracion(
@@ -52,7 +57,7 @@ public class Main {
                     menuConfiguracion,
                     scanner);
 
-            menuPrincipal.mostrar();            
+            menuPrincipal.mostrar();
         }
     }
 }

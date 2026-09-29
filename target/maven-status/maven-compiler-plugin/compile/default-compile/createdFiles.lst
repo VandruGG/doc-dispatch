@@ -1,5 +1,6 @@
 com\vandrugg\docdispatch\model\Documento.class
 com\vandrugg\docdispatch\model\ResultadoEnvio.class
+com\vandrugg\docdispatch\model\ResultadoSimulacion.class
 com\vandrugg\docdispatch\service\ServicioDocumentos.class
 com\vandrugg\docdispatch\config\Constantes.class
 com\vandrugg\docdispatch\enums\EstadoEnvio.class

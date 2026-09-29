@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import com.vandrugg.docdispatch.model.Documento;
 import com.vandrugg.docdispatch.model.PreparacionEnvio;
+import com.vandrugg.docdispatch.model.ResultadoSimulacion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
 
 public class ServicioPreparacionEnvios {
@@ -40,21 +41,17 @@ public class ServicioPreparacionEnvios {
 
         List<PreparacionEnvio> preparaciones = new ArrayList<>();
 
-        for(Map.Entry<Integer, List<Documento>> grupo
-            : documentosPorNumero.entrySet()
-        ) {
+        for (Map.Entry<Integer, List<Documento>> grupo : documentosPorNumero.entrySet()) {
 
             int numeroDocumento = grupo.getKey();
 
             List<String> destinatarios = repositorioDestinatarios.obtenerDestinatarios(numeroDocumento);
 
             preparaciones.add(
-                new PreparacionEnvio(
-                    numeroDocumento,
-                    List.copyOf(grupo.getValue()),
-                    List.copyOf(destinatarios)
-                )
-            );
+                    new PreparacionEnvio(
+                            numeroDocumento,
+                            List.copyOf(grupo.getValue()),
+                            List.copyOf(destinatarios)));
         }
         return preparaciones;
     }
@@ -71,5 +68,38 @@ public class ServicioPreparacionEnvios {
                     .add(documento);
         }
         return grupos;
+    }
+
+    public List<ResultadoSimulacion> simular(Path carpeta) {
+
+        List<PreparacionEnvio> preparaciones = preparar(carpeta);
+
+        List<ResultadoSimulacion> resultados = new ArrayList<>();
+
+        for (PreparacionEnvio preparacion : preparaciones) {
+
+            boolean listo = preparacion.tieneDestinatarios()
+                    && !preparacion.documentos().isEmpty();
+
+            String detalle;
+
+            if (!preparacion.tieneDestinatarios()) {
+                detalle = "Sin destinatarios configurados.";
+            } else if (preparacion.documentos().isEmpty()) {
+                detalle = "Sin documentos para enviar.";
+            } else {
+                detalle = "Envio preparado correctamente.";
+            }
+
+            resultados.add(
+                    new ResultadoSimulacion(
+                            preparacion.numeroDocumento(),
+                            preparacion.documentos().size(),
+                            preparacion.destinatarios().size(),
+                            listo,
+                            detalle));
+        }
+
+        return resultados;
     }
 }

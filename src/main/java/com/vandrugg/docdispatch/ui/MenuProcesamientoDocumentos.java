@@ -1,29 +1,32 @@
 package com.vandrugg.docdispatch.ui;
 
+import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Scanner;
 
 import com.vandrugg.docdispatch.model.Documento;
-import com.vandrugg.docdispatch.service.ServicioDocumentos;
+import com.vandrugg.docdispatch.model.PreparacionEnvio;
+import com.vandrugg.docdispatch.model.ResultadoSimulacion;
+import com.vandrugg.docdispatch.service.ServicioPreparacionEnvios;
 
 public class MenuProcesamientoDocumentos {
 
-    private final ServicioDocumentos servicioDocumentos;
+    private final ServicioPreparacionEnvios servicioPreparacionEnvios;
     private final Scanner scanner;
 
     public MenuProcesamientoDocumentos(
-            ServicioDocumentos servicioDocumentos,
+            ServicioPreparacionEnvios servicioPreparacionEnvios,
             Scanner scanner) {
-        this.servicioDocumentos = servicioDocumentos;
+        this.servicioPreparacionEnvios = servicioPreparacionEnvios;
         this.scanner = scanner;
     }
 
-    public void mostrar(){
+    public void mostrar() {
         boolean volver = false;
 
-        while(!volver){
+        while (!volver) {
             limpiarPantalla();
 
             System.out.println("================================");
@@ -31,6 +34,7 @@ public class MenuProcesamientoDocumentos {
             System.out.println("================================");
             System.out.println();
             System.out.println("1. Analizar carpeta");
+            System.out.println("2. Simular envio");
             System.out.println("0. Volver al menu principal");
             System.out.println();
             System.out.print("Seleccione una opcion: ");
@@ -39,6 +43,7 @@ public class MenuProcesamientoDocumentos {
 
             switch (opcion) {
                 case "1" -> analizarCarpeta();
+                case "2" -> simularEnvios();
                 case "0" -> volver = true;
 
                 default -> {
@@ -49,7 +54,7 @@ public class MenuProcesamientoDocumentos {
             }
         }
     }
-    
+
     private void analizarCarpeta() {
         limpiarPantalla();
 
@@ -62,9 +67,9 @@ public class MenuProcesamientoDocumentos {
         try {
             Path carpeta = Path.of(entrada);
 
-            List<Documento> documentos = servicioDocumentos.analizarCarpeta(carpeta);
+            List<PreparacionEnvio> preparaciones = servicioPreparacionEnvios.preparar(carpeta);
 
-            mostrarResultado(documentos);
+            mostrarResultado(preparaciones);
 
         } catch (InvalidPathException e) {
             System.out.println();
@@ -78,10 +83,10 @@ public class MenuProcesamientoDocumentos {
         pausar();
     }
 
-    private void mostrarResultado(List<Documento> documentos) {
+    private void mostrarResultado(List<PreparacionEnvio> preparaciones) {
         System.out.println();
 
-        if (documentos.isEmpty()) {
+        if (preparaciones.isEmpty()) {
             System.out.println(
                     "No se encontraron documentos validos.");
             return;
@@ -90,17 +95,126 @@ public class MenuProcesamientoDocumentos {
         System.out.println("DOCUMENTOS DETECTADOS");
         System.out.println("---------------------");
 
-        for (Documento documento : documentos) {
+        for (PreparacionEnvio preparacion : preparaciones) {
             System.out.println(
-                    documento.numeroDocumento()
-                            + " - "
-                            + documento.nombreArchivo());
+                    "Documento: "
+                            + preparacion.numeroDocumento());
+
+            System.out.println("Archivos:");
+
+            for (Documento documento : preparacion.documentos()) {
+                System.out.println(
+                        "- " + documento.nombreArchivo());
+            }
+
+            System.out.println("Destinatarios:");
+
+            if (preparacion.tieneDestinatarios()) {
+
+                for (String destinatario : preparacion.destinatarios()) {
+
+                    System.out.println(
+                            "- " + destinatario);
+                }
+            } else {
+                System.out.println(
+                        "- SIN DESTINATARIOS CONFIGURADOS");
+            }
+
+            System.out.println("---------------------");
         }
+
+        long sinDestinatarios = preparaciones.stream()
+                .filter(preparacion -> !preparacion.tieneDestinatarios()).count();
 
         System.out.println();
         System.out.println(
-                "Total de documentos: "
-                        + documentos.size());
+                "Total de grupos: "
+                        + preparaciones.size());
+
+        System.out.println(
+                "Grupos sin destinatarios: "
+                        + sinDestinatarios);
+    }
+
+    private void simularEnvios() {
+        limpiarPantalla();
+
+        System.out.println("=== SIMULAR ENVIOS ===");
+        System.out.println();
+        System.out.print("Ingrese la ruta de la carpeta: ");
+
+        String entrada = scanner.nextLine().trim();
+
+        try {
+            Path carpeta = Path.of(entrada);
+
+            List<ResultadoSimulacion> resultados = servicioPreparacionEnvios.simular(carpeta);
+
+            mostrarSimulacion(resultados);
+        } catch (InvalidPathException e) {
+            System.out.println();
+            System.out.println("La ruta ingresada no es valida.");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println();
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void mostrarSimulacion(
+            List<ResultadoSimulacion> resultados) {
+
+        System.out.println();
+
+        if (resultados.isEmpty()) {
+            System.out.println("No se encontraron envios para simular.");
+            return;
+        }
+
+        System.out.println("RESULTADO DE SIMULACION");
+        System.out.println("=======================");
+
+        for (ResultadoSimulacion resultado : resultados) {
+
+            System.out.println();
+            System.out.println(
+                    "Documento: "
+                            + resultado.numeroDocumento());
+
+            System.out.println(
+                    "Archivos: "
+                            + resultado.cantidadArchivos());
+
+            System.out.println(
+                    "Destinatarios: "
+                            + resultado.cantidadDestinatarios());
+
+            System.out.println(
+                    "Estado: "
+                            + (resultado.listoParaEnviar()
+                                    ? "LISTO"
+                                    : "NO LISTO"));
+
+            System.out.println(
+                    "Detalle: "
+                            + resultado.detalle());
+
+            System.out.println("---------------------");
+        }
+
+        long listos = resultados.stream()
+                .filter(
+                        ResultadoSimulacion::listoParaEnviar)
+                .count();
+
+        System.out.println();
+        System.out.println(
+                "Listos para enviar: "
+                        + listos);
+
+        System.out.println(
+                "Con problemas: "
+                        + (resultados.size() - listos));
     }
 
     private void pausar() {
@@ -115,7 +229,7 @@ public class MenuProcesamientoDocumentos {
                     .inheritIO()
                     .start()
                     .waitFor();
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
 
         }
     }
