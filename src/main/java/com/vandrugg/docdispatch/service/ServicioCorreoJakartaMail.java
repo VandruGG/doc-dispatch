@@ -6,9 +6,10 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
 
-import com.vandrugg.docdispatch.model.ConfiguracionCorreo;
-import com.vandrugg.docdispatch.model.ResultadoEnvio;
 import com.vandrugg.docdispatch.enums.EstadoEnvio;
+import com.vandrugg.docdispatch.model.ConfiguracionCorreo;
+import com.vandrugg.docdispatch.model.ResultadoConexionCorreo;
+import com.vandrugg.docdispatch.model.ResultadoEnvio;
 
 import jakarta.mail.BodyPart;
 import jakarta.mail.Message;
@@ -115,31 +116,57 @@ public class ServicioCorreoJakartaMail implements ServicioCorreo {
     }
 
     private Properties crearPropiedades() {
-        
+
         Properties properties = new Properties();
         properties.put("mail.smtp.host", configuracion.host());
         properties.put("mail.smtp.host", String.valueOf(configuracion.puerto()));
         properties.put("mail.smtp.auth", "true");
-        
-        switch(configuracion.seguridad()){
+
+        switch (configuracion.seguridad()) {
 
             case STARTTLS -> {
                 properties.put(
-                    "mail.smtp.starttls.enable",
-                    "true"
-                );
+                        "mail.smtp.starttls.enable",
+                        "true");
             }
             case SSL_TLS -> {
                 properties.put(
-                    "mail.smtp.ssl.enable",
-                    "true"
-                );
+                        "mail.smtp.ssl.enable",
+                        "true");
             }
             case NINGUNA -> {
-                //No se agrega configuracion TLS.
+                // No se agrega configuracion TLS.
             }
         }
-        
+
         return properties;
+    }
+
+    @Override
+    public ResultadoConexionCorreo probarConexion() {
+
+        try {
+            Session session = Session.getInstance(crearPropiedades());
+
+            try (Transport transport = session.getTransport("smtp")) {
+
+                transport.connect(
+                        configuracion.host(),
+                        configuracion.puerto(),
+                        configuracion.usuario(),
+                        configuracion.password());
+            }
+
+            return new ResultadoConexionCorreo(
+                    true,
+                    "Conexion SMTP realizada correctamente.");
+
+        } catch (MessagingException e) {
+            return new ResultadoConexionCorreo(
+                    false,
+                    e.getMessage() != null
+                            ? e.getMessage()
+                            : e.getClass().getSimpleName());
+        }
     }
 }

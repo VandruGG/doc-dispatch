@@ -18,6 +18,7 @@ import com.vandrugg.docdispatch.enums.EstadoEnvio;
 import com.vandrugg.docdispatch.model.ResultadoEnvio;
 import com.vandrugg.docdispatch.model.PreparacionEnvio;
 import com.vandrugg.docdispatch.model.ResultadoSimulacion;
+import com.vandrugg.docdispatch.model.ResultadoConexionCorreo;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
 
@@ -228,6 +229,14 @@ public class ServicioPreparacionEnviosTest {
                         return new ResultadoEnvio(
                                         EstadoEnvio.ENVIADO,
                                         "Envio simulado por test.");
+                }
+
+                @Override
+                public ResultadoConexionCorreo probarConexion(){
+                        return new ResultadoConexionCorreo(
+                                true,
+                                "Conexion simulada correctamente."
+                        );
                 }
         }
 }
