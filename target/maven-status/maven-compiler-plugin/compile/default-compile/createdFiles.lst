@@ -2,6 +2,7 @@ com\vandrugg\docdispatch\model\Documento.class
 com\vandrugg\docdispatch\service\ServicioCorreoJakartaMail$1.class
 com\vandrugg\docdispatch\model\ResultadoSimulacion.class
 com\vandrugg\docdispatch\config\Constantes.class
+com\vandrugg\docdispatch\model\SolicitudCorreo.class
 com\vandrugg\docdispatch\model\ConfiguracionCorreo.class
 com\vandrugg\docdispatch\repository\RepositorioDestinatarios.class
 com\vandrugg\docdispatch\ui\MenuProcesamientoDocumentos.class

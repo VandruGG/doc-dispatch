@@ -8,9 +8,9 @@ import com.vandrugg.docdispatch.model.ConfiguracionCorreo;
 import com.vandrugg.docdispatch.model.ResultadoConexionCorreo;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
-import com.vandrugg.docdispatch.service.ServicioDocumentos;
 import com.vandrugg.docdispatch.service.ServicioCorreo;
 import com.vandrugg.docdispatch.service.ServicioCorreoJakartaMail;
+import com.vandrugg.docdispatch.service.ServicioDocumentos;
 import com.vandrugg.docdispatch.service.ServicioPreparacionEnvios;
 import com.vandrugg.docdispatch.ui.MenuConfiguracion;
 import com.vandrugg.docdispatch.ui.MenuDestinatarios;
@@ -44,7 +44,7 @@ public class Main {
                                 configuracionCorreo);
 
                 ResultadoConexionCorreo resultadoConexion = servicioCorreo.probarConexion();
-                
+
                 System.out.println(
                                 "Conexion de correo: "
                                                 + resultadoConexion.detalle());
@@ -52,7 +52,8 @@ public class Main {
                 ServicioPreparacionEnvios servicioPreparacionEnvios = new ServicioPreparacionEnvios(
                                 servicioDocumentos,
                                 repositorioDestinatarios,
-                                servicioCorreo);
+                                servicioCorreo,
+                                repositorioConfiguracion);
 
                 try (Scanner scanner = new Scanner(System.in)) {
 

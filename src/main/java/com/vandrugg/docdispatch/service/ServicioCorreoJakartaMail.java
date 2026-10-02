@@ -3,13 +3,13 @@ package com.vandrugg.docdispatch.service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Properties;
 
 import com.vandrugg.docdispatch.enums.EstadoEnvio;
 import com.vandrugg.docdispatch.model.ConfiguracionCorreo;
 import com.vandrugg.docdispatch.model.ResultadoConexionCorreo;
 import com.vandrugg.docdispatch.model.ResultadoEnvio;
+import com.vandrugg.docdispatch.model.SolicitudCorreo;
 
 import jakarta.mail.BodyPart;
 import jakarta.mail.Message;
@@ -35,22 +35,29 @@ public class ServicioCorreoJakartaMail implements ServicioCorreo {
     }
 
     @Override
-    public ResultadoEnvio enviar(
-            List<String> destinatarios,
-            List<Path> adjuntos) {
-        if (destinatarios == null || destinatarios.isEmpty()) {
+    public ResultadoEnvio enviar(SolicitudCorreo solicitud) {
+
+        if (solicitud == null) {
+            return new ResultadoEnvio(
+                    EstadoEnvio.ERROR,
+                    "La solicitud de correo es obligatoria.");
+        }
+
+        if (solicitud.destinatarios() == null
+                || solicitud.destinatarios().isEmpty()) {
             return new ResultadoEnvio(
                     EstadoEnvio.SIN_DESTINATARIO,
                     "No existen destinatarios para realizar el envio.");
         }
 
-        if (adjuntos == null || adjuntos.isEmpty()) {
+        if (solicitud.adjuntos() == null
+                || solicitud.adjuntos().isEmpty()) {
             return new ResultadoEnvio(
                     EstadoEnvio.ARCHIVO_INVALIDO,
                     "No existen archivos adjuntos para enviar.");
         }
 
-        for (Path adjunto : adjuntos) {
+        for (Path adjunto : solicitud.adjuntos()) {
             File archivo = adjunto.toFile();
 
             if (!archivo.exists() || !archivo.isFile())
@@ -66,24 +73,26 @@ public class ServicioCorreoJakartaMail implements ServicioCorreo {
                     new InternetAddress(
                             configuracion.usuario()));
 
-            for (String destinatario : destinatarios) {
+            for (String destinatario : solicitud.destinatarios()) {
                 mensaje.addRecipient(
                         Message.RecipientType.TO,
                         new InternetAddress(destinatario));
             }
 
             mensaje.setSubject(
-                    "Documentos - DocDispatch",
+                    solicitud.asunto(),
                     "UTF-8");
 
             MimeMultipart contenido = new MimeMultipart();
             BodyPart texto = new MimeBodyPart();
 
-            texto.setText("Se adjuntan los documentos correspondientes.");
+            texto.setText(
+                    solicitud.cuerpo()
+                    );
 
             contenido.addBodyPart(texto);
 
-            for (Path adjunto : adjuntos) {
+            for (Path adjunto : solicitud.adjuntos()) {
                 MimeBodyPart archivoAdjunto = new MimeBodyPart();
                 archivoAdjunto.attachFile(adjunto.toFile());
                 contenido.addBodyPart(archivoAdjunto);

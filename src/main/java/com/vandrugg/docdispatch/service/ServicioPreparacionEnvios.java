@@ -10,19 +10,23 @@ import com.vandrugg.docdispatch.model.Documento;
 import com.vandrugg.docdispatch.model.ResultadoEnvio;
 import com.vandrugg.docdispatch.model.PreparacionEnvio;
 import com.vandrugg.docdispatch.model.ResultadoSimulacion;
+import com.vandrugg.docdispatch.model.SolicitudCorreo;
 import com.vandrugg.docdispatch.enums.EstadoEnvio;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
+import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 
 public class ServicioPreparacionEnvios {
 
     private final ServicioDocumentos servicioDocumentos;
     private final ServicioCorreo servicioCorreo;
     private final RepositorioDestinatarios repositorioDestinatarios;
+    private final RepositorioConfiguracion repositorioConfiguracion;
 
     public ServicioPreparacionEnvios(
             ServicioDocumentos servicioDocumentos,
             RepositorioDestinatarios repositorioDestinatarios,
-            ServicioCorreo servicioCorreo) {
+            ServicioCorreo servicioCorreo,
+            RepositorioConfiguracion repositorioConfiguracion) {
 
         if (servicioDocumentos == null) {
             throw new IllegalArgumentException(
@@ -39,9 +43,15 @@ public class ServicioPreparacionEnvios {
                     "El repositorio de destinatarios es obligatorio.");
         }
 
+        if (repositorioConfiguracion == null) {
+            throw new IllegalArgumentException(
+                    "El repositorio de configuracion es obligatorio.");
+        }
+
         this.servicioDocumentos = servicioDocumentos;
         this.repositorioDestinatarios = repositorioDestinatarios;
         this.servicioCorreo = servicioCorreo;
+        this.repositorioConfiguracion = repositorioConfiguracion;
     }
 
     public List<PreparacionEnvio> preparar(Path carpeta) {
@@ -120,6 +130,10 @@ public class ServicioPreparacionEnvios {
 
         List<ResultadoEnvio> resultados = new ArrayList<>();
 
+        String asunto = repositorioConfiguracion.obtenerAsuntoCorreo();
+
+        String cuerpo = repositorioConfiguracion.obtenerCuerpoCorreo();
+
         for (PreparacionEnvio preparacion : preparaciones) {
 
             if (!preparacion.tieneDestinatarios()) {
@@ -134,9 +148,14 @@ public class ServicioPreparacionEnvios {
 
             List<Path> adjuntos = preparacion.documentos().stream().map(Documento::ruta).toList();
 
-            ResultadoEnvio resultado = servicioCorreo.enviar(
+            SolicitudCorreo solicitud = new SolicitudCorreo(
                     preparacion.destinatarios(),
+                    asunto,
+                    cuerpo,
                     adjuntos);
+
+            ResultadoEnvio resultado = servicioCorreo.enviar(
+                    solicitud);
 
             resultados.add(resultado);
         }

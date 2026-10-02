@@ -15,10 +15,11 @@ import org.junit.jupiter.api.io.TempDir;
 
 import com.vandrugg.docdispatch.database.DatabaseManager;
 import com.vandrugg.docdispatch.enums.EstadoEnvio;
-import com.vandrugg.docdispatch.model.ResultadoEnvio;
 import com.vandrugg.docdispatch.model.PreparacionEnvio;
-import com.vandrugg.docdispatch.model.ResultadoSimulacion;
 import com.vandrugg.docdispatch.model.ResultadoConexionCorreo;
+import com.vandrugg.docdispatch.model.ResultadoEnvio;
+import com.vandrugg.docdispatch.model.ResultadoSimulacion;
+import com.vandrugg.docdispatch.model.SolicitudCorreo;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
 
@@ -49,7 +50,8 @@ public class ServicioPreparacionEnviosTest {
                 servicioPreparacionEnvios = new ServicioPreparacionEnvios(
                                 servicioDocumentos,
                                 repositorioDestinatarios,
-                                servicioCorreoFalso);
+                                servicioCorreoFalso,
+                                repositorioConfiguracion);
 
         }
 
@@ -217,14 +219,12 @@ public class ServicioPreparacionEnviosTest {
                 private List<Path> ultimosAdjuntos = new ArrayList<>();
 
                 @Override
-                public ResultadoEnvio enviar(
-                                List<String> destinatarios,
-                                List<Path> adjuntos) {
+                public ResultadoEnvio enviar(SolicitudCorreo solicitud) {
                         cantidadEnvios++;
 
-                        ultimosDestinatarios = new ArrayList<>(destinatarios);
+                        ultimosDestinatarios = new ArrayList<>(solicitud.destinatarios());
 
-                        ultimosAdjuntos = new ArrayList<>(adjuntos);
+                        ultimosAdjuntos = new ArrayList<>(solicitud.adjuntos());
 
                         return new ResultadoEnvio(
                                         EstadoEnvio.ENVIADO,
@@ -232,11 +232,10 @@ public class ServicioPreparacionEnviosTest {
                 }
 
                 @Override
-                public ResultadoConexionCorreo probarConexion(){
+                public ResultadoConexionCorreo probarConexion() {
                         return new ResultadoConexionCorreo(
-                                true,
-                                "Conexion simulada correctamente."
-                        );
+                                        true,
+                                        "Conexion simulada correctamente.");
                 }
         }
 }
