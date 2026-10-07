@@ -97,17 +97,35 @@ public class ServicioPreparacionEnvios {
 
         List<ResultadoSimulacion> resultados = new ArrayList<>();
 
+        String asunto = repositorioConfiguracion.obtenerAsuntoCorreo();
+
+        String cuerpo = repositorioConfiguracion.obtenerCuerpoCorreo();
+
+        boolean asuntoValido = asunto != null && !asunto.isBlank();
+
+        boolean cuerpoValido = cuerpo != null && !cuerpo.isBlank();
+
         for (PreparacionEnvio preparacion : preparaciones) {
 
-            boolean listo = preparacion.tieneDestinatarios()
-                    && !preparacion.documentos().isEmpty();
+            boolean tieneDestinatarios = preparacion.tieneDestinatarios();
+
+            boolean tieneDocumentos = !preparacion.documentos().isEmpty();
+
+            boolean listo = tieneDestinatarios
+                    && tieneDocumentos
+                    && asuntoValido
+                    && cuerpoValido;
 
             String detalle;
 
-            if (!preparacion.tieneDestinatarios()) {
+            if (!tieneDestinatarios) {
                 detalle = "Sin destinatarios configurados.";
-            } else if (preparacion.documentos().isEmpty()) {
+            } else if (!tieneDocumentos) {
                 detalle = "Sin documentos para enviar.";
+            } else if (!asuntoValido) {
+                detalle = "El asunto del correo no esta configurado.";
+            } else if (!cuerpoValido) {
+                detalle = "El cuerpo del correo no esta configurado.";
             } else {
                 detalle = "Envio preparado correctamente.";
             }
@@ -118,6 +136,8 @@ public class ServicioPreparacionEnvios {
                             preparacion.documentos().size(),
                             preparacion.destinatarios().size(),
                             listo,
+                            asunto,
+                            cuerpo,
                             detalle));
         }
 
@@ -132,7 +152,17 @@ public class ServicioPreparacionEnvios {
 
         String asunto = repositorioConfiguracion.obtenerAsuntoCorreo();
 
+        if (asunto == null || asunto.isBlank()) {
+            throw new IllegalStateException(
+                    "El asunto del correo no esta configurado.");
+        }
+
         String cuerpo = repositorioConfiguracion.obtenerCuerpoCorreo();
+
+        if (cuerpo == null || cuerpo.isBlank()) {
+            throw new IllegalStateException(
+                    "El cuerpo del correo no esta configurado.");
+        }
 
         for (PreparacionEnvio preparacion : preparaciones) {
 
@@ -154,8 +184,15 @@ public class ServicioPreparacionEnvios {
                     cuerpo,
                     adjuntos);
 
-            ResultadoEnvio resultado = servicioCorreo.enviar(
+            ResultadoEnvio resultadoCorreo = servicioCorreo.enviar(
                     solicitud);
+
+            ResultadoEnvio resultado = new ResultadoEnvio(
+                    resultadoCorreo.estado(),
+                    "Documento "
+                            + preparacion.numeroDocumento()
+                            + ": "
+                            + resultadoCorreo.detalle());
 
             resultados.add(resultado);
         }

@@ -27,6 +27,7 @@ public class ServicioPreparacionEnviosTest {
 
         private RepositorioDestinatarios repositorioDestinatarios;
         private ServicioPreparacionEnvios servicioPreparacionEnvios;
+        private RepositorioConfiguracion repositorioConfiguracion;
         private ServicioCorreoFalso servicioCorreoFalso;
 
         @BeforeEach
@@ -37,7 +38,7 @@ public class ServicioPreparacionEnviosTest {
 
                 databaseManager.inicializarBaseDeDatos();
 
-                RepositorioConfiguracion repositorioConfiguracion = new RepositorioConfiguracion(databaseManager);
+                repositorioConfiguracion = new RepositorioConfiguracion(databaseManager);
 
                 repositorioConfiguracion.guardarCodigoDocumento("LIQ");
 
@@ -127,6 +128,8 @@ public class ServicioPreparacionEnviosTest {
         void debeSimularEnvioListo(
                         @TempDir Path carpeta) throws IOException {
 
+                configurarCorreoValido();
+
                 Files.createFile(carpeta.resolve("LIQ166.pdf"));
 
                 repositorioDestinatarios.guardarDestinatario(
@@ -168,6 +171,9 @@ public class ServicioPreparacionEnviosTest {
         @Test
         void debeEnvierDocumentosPreparados(
                         @TempDir Path carpeta) throws IOException {
+
+                configurarCorreoValido();
+
                 Files.createFile(
                                 carpeta.resolve("LIQ166.pdf"));
 
@@ -199,6 +205,8 @@ public class ServicioPreparacionEnviosTest {
         void noDebeEnviarSiNoHayDestinatarios(
                         @TempDir Path carpeta) throws IOException {
 
+                configurarCorreoValido();
+
                 Files.createFile(carpeta.resolve("LIQ200.pdf"));
 
                 List<ResultadoEnvio> resultados = servicioPreparacionEnvios.enviar(carpeta);
@@ -208,6 +216,57 @@ public class ServicioPreparacionEnviosTest {
                                 EstadoEnvio.SIN_DESTINATARIO,
                                 resultados.get(0).estado());
                 assertEquals(0, servicioCorreoFalso.cantidadEnvios);
+        }
+
+        @Test
+        void debeMarcarComoNoListoSiFaltaAsunto(
+                        @TempDir Path carpeta) throws IOException {
+
+                repositorioConfiguracion.guardarCuerpoCorreo("Cuerpo de prueba");
+
+                Files.createFile(
+                                carpeta.resolve("LIQ300.pdf"));
+
+                repositorioDestinatarios.guardarDestinatario(
+                                300,
+                                "prueba@correo.com");
+
+                List<ResultadoSimulacion> resultados = servicioPreparacionEnvios.simular(carpeta);
+
+                assertEquals(1, resultados.size());
+
+                ResultadoSimulacion resultado = resultados.get(0);
+
+                assertFalse(resultado.listoParaEnviar());
+
+                assertEquals(
+                                "El asunto del correo no esta configurado.",
+                                resultado.detalle());
+        }
+
+        @Test
+        void debeMarcarComoNoListoSiFaltaCuerpo(
+                        @TempDir Path carpeta) throws IOException {
+
+                repositorioConfiguracion.guardarAsuntoCorreo("Asunto de prueba");
+
+                Files.createFile(carpeta.resolve("LIQ301.pdf"));
+
+                repositorioDestinatarios.guardarDestinatario(
+                                301,
+                                "prueba@correo.com");
+
+                List<ResultadoSimulacion> resultados = servicioPreparacionEnvios.simular(carpeta);
+
+                assertEquals(1, resultados.size());
+
+                ResultadoSimulacion resultado = resultados.get(0);
+
+                assertFalse(resultado.listoParaEnviar());
+
+                assertEquals(
+                                "El cuerpo del correo no esta configurado.",
+                                resultado.detalle());
         }
 
         private static class ServicioCorreoFalso implements ServicioCorreo {
@@ -237,5 +296,14 @@ public class ServicioPreparacionEnviosTest {
                                         true,
                                         "Conexion simulada correctamente.");
                 }
+        }
+
+        private void configurarCorreoValido() {
+
+                repositorioConfiguracion.guardarAsuntoCorreo(
+                                "Asunto de prueba.");
+
+                repositorioConfiguracion.guardarCuerpoCorreo(
+                                "Correo de prueba.");
         }
 }

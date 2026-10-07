@@ -32,7 +32,7 @@ public class RepositorioConfiguracion {
         return obtenerValor(CLAVE_ASUNTO_CORREO);
     }
 
-    public void guardarAsuntCorreo(String asunto) {
+    public void guardarAsuntoCorreo(String asunto) {
         guardarValor(CLAVE_ASUNTO_CORREO, asunto);
     }
 

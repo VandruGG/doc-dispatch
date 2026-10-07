@@ -163,6 +163,8 @@ public class MenuProcesamientoDocumentos {
             System.out.println();
             System.out.println("Error: " + e.getMessage());
         }
+
+        pausar();
     }
 
     private void mostrarSimulacion(
@@ -200,6 +202,13 @@ public class MenuProcesamientoDocumentos {
                                     : "NO LISTO"));
 
             System.out.println(
+                    "Asunto: "
+                            + resultado.asunto());
+
+            System.out.println("Cuerpo:");
+            System.out.println(resultado.cuerpo());
+
+            System.out.println(
                     "Detalle: "
                             + resultado.detalle());
 
@@ -232,6 +241,18 @@ public class MenuProcesamientoDocumentos {
 
         try {
             Path carpeta = Path.of(entrada);
+
+            List<PreparacionEnvio> preparaciones = servicioPreparacionEnvios.preparar(carpeta);
+
+            if (preparaciones.isEmpty()) {
+                System.out.println();
+                System.out.println(
+                        "No se encontraron documentos para enviar.");
+                pausar();
+                return;
+            }
+
+            mostrarResultado(preparaciones);
 
             List<ResultadoSimulacion> simulacion = servicioPreparacionEnvios.simular(carpeta);
 

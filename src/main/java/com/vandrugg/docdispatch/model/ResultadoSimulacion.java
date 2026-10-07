@@ -5,6 +5,8 @@ public record ResultadoSimulacion(
     int cantidadArchivos,
     int cantidadDestinatarios,
     boolean listoParaEnviar,
+    String asunto,
+    String cuerpo,
     String detalle
 ) {
 

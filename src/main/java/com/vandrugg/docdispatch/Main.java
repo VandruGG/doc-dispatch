@@ -36,18 +36,24 @@ public class Main {
                         repositorioConfiguracion.guardarCodigoDocumento(codigoDocumento);
                 }
 
+                String asuntoCorreo = repositorioConfiguracion.obtenerAsuntoCorreo();
+
+                if(asuntoCorreo == null){
+                        repositorioConfiguracion.guardarAsuntoCorreo("Documentacion");
+                }
+
+                String cuerpoCorreo = repositorioConfiguracion.obtenerCuerpoCorreo();
+
+                if(cuerpoCorreo == null){
+                        repositorioConfiguracion.guardarCuerpoCorreo("Se adjunta la documentacion correspondiente.");
+                }
+
                 ServicioDocumentos servicioDocumentos = new ServicioDocumentos(repositorioConfiguracion);
 
                 ConfiguracionCorreo configuracionCorreo = ConfiguracionCorreoFactory.desdeEntorno();
 
                 ServicioCorreo servicioCorreo = new ServicioCorreoJakartaMail(
                                 configuracionCorreo);
-
-                ResultadoConexionCorreo resultadoConexion = servicioCorreo.probarConexion();
-
-                System.out.println(
-                                "Conexion de correo: "
-                                                + resultadoConexion.detalle());
 
                 ServicioPreparacionEnvios servicioPreparacionEnvios = new ServicioPreparacionEnvios(
                                 servicioDocumentos,
@@ -67,6 +73,7 @@ public class Main {
 
                         MenuConfiguracion menuConfiguracion = new MenuConfiguracion(
                                         repositorioConfiguracion,
+                                        servicioCorreo,
                                         scanner);
 
                         MenuPrincipal menuPrincipal = new MenuPrincipal(
