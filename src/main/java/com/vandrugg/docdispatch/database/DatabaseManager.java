@@ -55,11 +55,24 @@ public final class DatabaseManager {
                 );
                 """;
 
+        String sqlHistorialEnvios = """
+                CREATE TABLE IF NOT EXISTS historial_envios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                fecha_hora TEXT NOT NULL,
+                numero_documento INTEGER NOT NULL,
+                estado TEXT NOT NULL,
+                destinatarios TEXT NOT NULL,
+                archivos TEXT NOT NULL,
+                detalle TEXT NOT NULL
+                );
+                """;
+
         try (
                 Connection conexion = obtenerConexion();
                 Statement statement = conexion.createStatement()) {
             statement.execute(sqlDestinatarios);
             statement.execute(sqlConfiguracion);
+            statement.execute(sqlHistorialEnvios);
 
         } catch (SQLException e) {
             throw new IllegalStateException(

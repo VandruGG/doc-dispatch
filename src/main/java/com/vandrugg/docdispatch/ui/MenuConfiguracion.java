@@ -184,6 +184,8 @@ public class MenuConfiguracion {
         }
 
         System.out.println("Detalle: " + resultado.detalle());
+
+        pausar();
     }
 
     private void pausar() {
