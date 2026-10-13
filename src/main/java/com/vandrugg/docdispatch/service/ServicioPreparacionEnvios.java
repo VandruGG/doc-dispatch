@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import com.vandrugg.docdispatch.model.Documento;
 import com.vandrugg.docdispatch.model.ResultadoEnvio;
@@ -13,6 +14,7 @@ import com.vandrugg.docdispatch.model.ResultadoSimulacion;
 import com.vandrugg.docdispatch.model.SolicitudCorreo;
 import com.vandrugg.docdispatch.enums.EstadoEnvio;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
+import com.vandrugg.docdispatch.repository.RepositorioHistorialEnvios;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 
 public class ServicioPreparacionEnvios {
@@ -21,12 +23,14 @@ public class ServicioPreparacionEnvios {
     private final ServicioCorreo servicioCorreo;
     private final RepositorioDestinatarios repositorioDestinatarios;
     private final RepositorioConfiguracion repositorioConfiguracion;
+    private final RepositorioHistorialEnvios repositorioHistorialEnvios;
 
     public ServicioPreparacionEnvios(
             ServicioDocumentos servicioDocumentos,
             RepositorioDestinatarios repositorioDestinatarios,
             ServicioCorreo servicioCorreo,
-            RepositorioConfiguracion repositorioConfiguracion) {
+            RepositorioConfiguracion repositorioConfiguracion,
+            RepositorioHistorialEnvios repositorioHistorialEnvios) {
 
         if (servicioDocumentos == null) {
             throw new IllegalArgumentException(
@@ -48,10 +52,16 @@ public class ServicioPreparacionEnvios {
                     "El repositorio de configuracion es obligatorio.");
         }
 
+        if (repositorioHistorialEnvios == null) {
+            throw new IllegalArgumentException(
+                    "El repositorio de historial es obligatorio.");
+        }
+
         this.servicioDocumentos = servicioDocumentos;
         this.repositorioDestinatarios = repositorioDestinatarios;
         this.servicioCorreo = servicioCorreo;
         this.repositorioConfiguracion = repositorioConfiguracion;
+        this.repositorioHistorialEnvios = repositorioHistorialEnvios;
     }
 
     public List<PreparacionEnvio> preparar(Path carpeta) {
@@ -167,12 +177,22 @@ public class ServicioPreparacionEnvios {
         for (PreparacionEnvio preparacion : preparaciones) {
 
             if (!preparacion.tieneDestinatarios()) {
-                resultados.add(
-                        new ResultadoEnvio(
-                                EstadoEnvio.SIN_DESTINATARIO,
-                                "Documento "
-                                        + preparacion.numeroDocumento()
-                                        + ": sin destinatarios configurados."));
+                String detalle = "Documento "
+                        + preparacion.numeroDocumento()
+                        + ": sin destinatarios configurados.";
+
+                ResultadoEnvio resultado = new ResultadoEnvio(
+                        EstadoEnvio.SIN_DESTINATARIO,
+                        detalle);
+
+                repositorioHistorialEnvios.registrar(
+                        preparacion.numeroDocumento(),
+                        resultado.estado(),
+                        "",
+                        obtenerNombresArchivos(preparacion),
+                        resultado.detalle());
+
+                resultados.add(resultado);
                 continue;
             }
 
@@ -198,5 +218,14 @@ public class ServicioPreparacionEnvios {
         }
 
         return resultados;
+    }
+
+    private String obtenerNombresArchivos(
+            PreparacionEnvio preparacion) {
+
+        return preparacion.documentos()
+                .stream()
+                .map(Documento::nombreArchivo)
+                .collect(Collectors.joining(", "));
     }
 }
