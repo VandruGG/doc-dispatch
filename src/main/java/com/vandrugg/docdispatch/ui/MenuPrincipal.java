@@ -8,16 +8,19 @@ public class MenuPrincipal {
     private final MenuDestinatarios menuDestinatarios;
     private final MenuProcesamientoDocumentos menuProcesamientoDocumentos;
     private final MenuConfiguracion menuConfiguracion;
+    private final MenuHistorial menuHistorial;
     private final Scanner scanner;
 
     public MenuPrincipal(
             MenuDestinatarios menuDestinatarios,
             MenuProcesamientoDocumentos menuProcesamientoDocumentos,
             MenuConfiguracion menuConfiguracion,
+            MenuHistorial menuHistorial,
             Scanner scanner) {
         this.menuDestinatarios = menuDestinatarios;
         this.menuProcesamientoDocumentos = menuProcesamientoDocumentos;
         this.menuConfiguracion = menuConfiguracion;
+        this.menuHistorial = menuHistorial;
         this.scanner = new Scanner(System.in);
     }
 
@@ -46,8 +49,7 @@ public class MenuPrincipal {
 
                 case "2" -> menuProcesamientoDocumentos.mostrar();
 
-                case "3" -> opcionNoDisponible(
-                        "Historial de envios");
+                case "3" -> menuHistorial.mostrar();
 
                 case "4" -> menuConfiguracion.mostrar();
 

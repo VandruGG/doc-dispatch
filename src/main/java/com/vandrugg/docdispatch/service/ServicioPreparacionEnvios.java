@@ -214,6 +214,13 @@ public class ServicioPreparacionEnvios {
                             + ": "
                             + resultadoCorreo.detalle());
 
+            repositorioHistorialEnvios.registrar(
+                    preparacion.numeroDocumento(),
+                    resultado.estado(),
+                    String.join(", ", preparacion.destinatarios()),
+                    obtenerNombresArchivos(preparacion),
+                    resultado.detalle());
+
             resultados.add(resultado);
         }
 

@@ -11,6 +11,7 @@ C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispa
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\model\ResultadoSimulacion.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\service\IdentificadorPorCodigo.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\service\IdentificadorDocumento.java
+C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\service\ServicioCorreoDiferido.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\service\ServicioPreparacionEnvios.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\service\ServicioDocumentos.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\ui\MenuConfiguracion.java
@@ -21,6 +22,7 @@ C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispa
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\ui\MenuProcesamientoDocumentos.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\database\DatabaseManager.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\Main.java
+C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\ui\MenuHistorial.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\service\ServicioCorreoJakartaMail.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\repository\RepositorioConfiguracion.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\model\Destinatario.java

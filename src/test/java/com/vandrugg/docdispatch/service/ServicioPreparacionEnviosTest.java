@@ -22,12 +22,14 @@ import com.vandrugg.docdispatch.model.ResultadoSimulacion;
 import com.vandrugg.docdispatch.model.SolicitudCorreo;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
+import com.vandrugg.docdispatch.repository.RepositorioHistorialEnvios;
 
 public class ServicioPreparacionEnviosTest {
 
         private RepositorioDestinatarios repositorioDestinatarios;
         private ServicioPreparacionEnvios servicioPreparacionEnvios;
         private RepositorioConfiguracion repositorioConfiguracion;
+        private RepositorioHistorialEnvios repositorioHistorialEnvios;
         private ServicioCorreoFalso servicioCorreoFalso;
 
         @BeforeEach
@@ -44,6 +46,8 @@ public class ServicioPreparacionEnviosTest {
 
                 repositorioDestinatarios = new RepositorioDestinatarios(databaseManager);
 
+                repositorioHistorialEnvios = new RepositorioHistorialEnvios(databaseManager);
+
                 ServicioDocumentos servicioDocumentos = new ServicioDocumentos(repositorioConfiguracion);
 
                 servicioCorreoFalso = new ServicioCorreoFalso();
@@ -52,7 +56,8 @@ public class ServicioPreparacionEnviosTest {
                                 servicioDocumentos,
                                 repositorioDestinatarios,
                                 servicioCorreoFalso,
-                                repositorioConfiguracion);
+                                repositorioConfiguracion,
+                                repositorioHistorialEnvios);
 
         }
 

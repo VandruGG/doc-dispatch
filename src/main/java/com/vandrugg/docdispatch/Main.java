@@ -2,18 +2,17 @@ package com.vandrugg.docdispatch;
 
 import java.util.Scanner;
 
-import com.vandrugg.docdispatch.config.ConfiguracionCorreoFactory;
 import com.vandrugg.docdispatch.database.DatabaseManager;
-import com.vandrugg.docdispatch.model.ConfiguracionCorreo;
-import com.vandrugg.docdispatch.model.ResultadoConexionCorreo;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
+import com.vandrugg.docdispatch.repository.RepositorioHistorialEnvios;
 import com.vandrugg.docdispatch.service.ServicioCorreo;
-import com.vandrugg.docdispatch.service.ServicioCorreoJakartaMail;
 import com.vandrugg.docdispatch.service.ServicioDocumentos;
 import com.vandrugg.docdispatch.service.ServicioPreparacionEnvios;
+import com.vandrugg.docdispatch.service.ServicioCorreoDiferido;
 import com.vandrugg.docdispatch.ui.MenuConfiguracion;
 import com.vandrugg.docdispatch.ui.MenuDestinatarios;
+import com.vandrugg.docdispatch.ui.MenuHistorial;
 import com.vandrugg.docdispatch.ui.MenuPrincipal;
 import com.vandrugg.docdispatch.ui.MenuProcesamientoDocumentos;
 
@@ -28,6 +27,8 @@ public class Main {
 
                 RepositorioConfiguracion repositorioConfiguracion = new RepositorioConfiguracion(databaseManager);
 
+                RepositorioHistorialEnvios repositorioHistorialEnvios = new RepositorioHistorialEnvios(databaseManager);
+
                 String codigoDocumento = repositorioConfiguracion.obtenerCodigoDocumento();
 
                 if (codigoDocumento == null) {
@@ -38,28 +39,26 @@ public class Main {
 
                 String asuntoCorreo = repositorioConfiguracion.obtenerAsuntoCorreo();
 
-                if(asuntoCorreo == null){
+                if (asuntoCorreo == null) {
                         repositorioConfiguracion.guardarAsuntoCorreo("Documentacion");
                 }
 
                 String cuerpoCorreo = repositorioConfiguracion.obtenerCuerpoCorreo();
 
-                if(cuerpoCorreo == null){
+                if (cuerpoCorreo == null) {
                         repositorioConfiguracion.guardarCuerpoCorreo("Se adjunta la documentacion correspondiente.");
                 }
 
                 ServicioDocumentos servicioDocumentos = new ServicioDocumentos(repositorioConfiguracion);
 
-                ConfiguracionCorreo configuracionCorreo = ConfiguracionCorreoFactory.desdeEntorno();
-
-                ServicioCorreo servicioCorreo = new ServicioCorreoJakartaMail(
-                                configuracionCorreo);
+                ServicioCorreo servicioCorreo = new ServicioCorreoDiferido();
 
                 ServicioPreparacionEnvios servicioPreparacionEnvios = new ServicioPreparacionEnvios(
                                 servicioDocumentos,
                                 repositorioDestinatarios,
                                 servicioCorreo,
-                                repositorioConfiguracion);
+                                repositorioConfiguracion,
+                                repositorioHistorialEnvios);
 
                 try (Scanner scanner = new Scanner(System.in)) {
 
@@ -76,10 +75,15 @@ public class Main {
                                         servicioCorreo,
                                         scanner);
 
+                        MenuHistorial menuHistorial = new MenuHistorial(
+                                        repositorioHistorialEnvios,
+                                        scanner);
+
                         MenuPrincipal menuPrincipal = new MenuPrincipal(
                                         menuDestinatarios,
                                         menuProcesamientoDocumentos,
                                         menuConfiguracion,
+                                        menuHistorial,
                                         scanner);
 
                         menuPrincipal.mostrar();
