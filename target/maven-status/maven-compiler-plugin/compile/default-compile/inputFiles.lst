@@ -6,6 +6,8 @@ C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispa
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\model\PreparacionEnvio.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\enums\SeguridadSmtp.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\service\ServicioCorreo.java
+C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\security\CifradorCredendiales.java
+C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\security\ProtectorClave.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\config\ConfiguracionCorreoFactory.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\repository\RepositorioDestinatarios.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\model\ResultadoSimulacion.java
@@ -20,6 +22,7 @@ C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispa
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\enums\EstadoEnvio.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\ui\MenuDestinatarios.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\ui\MenuProcesamientoDocumentos.java
+C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\security\ProtectorClaveWindowsDpapi.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\database\DatabaseManager.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\Main.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\ui\MenuHistorial.java
