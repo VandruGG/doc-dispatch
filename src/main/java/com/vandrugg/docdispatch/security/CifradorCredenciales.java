@@ -12,7 +12,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class CifradorCredendiales {
+public class CifradorCredenciales {
 
     private static final int TAMANIO_CLAVE_AES = 256;
     private static final int TAMANIO_IV = 12;

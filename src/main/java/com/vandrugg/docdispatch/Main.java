@@ -4,12 +4,17 @@ import java.util.Scanner;
 
 import com.vandrugg.docdispatch.database.DatabaseManager;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
+import com.vandrugg.docdispatch.repository.RepositorioConfiguracionCorreo;
 import com.vandrugg.docdispatch.repository.RepositorioDestinatarios;
 import com.vandrugg.docdispatch.repository.RepositorioHistorialEnvios;
+import com.vandrugg.docdispatch.security.CifradorCredenciales;
+import com.vandrugg.docdispatch.security.ProtectorClave;
+import com.vandrugg.docdispatch.security.ProtectorClaveWindowsDpapi;
 import com.vandrugg.docdispatch.service.ServicioCorreo;
 import com.vandrugg.docdispatch.service.ServicioDocumentos;
 import com.vandrugg.docdispatch.service.ServicioPreparacionEnvios;
 import com.vandrugg.docdispatch.service.ServicioCorreoDiferido;
+import com.vandrugg.docdispatch.service.ServicioCredencialesCorreo;
 import com.vandrugg.docdispatch.ui.MenuConfiguracion;
 import com.vandrugg.docdispatch.ui.MenuDestinatarios;
 import com.vandrugg.docdispatch.ui.MenuHistorial;
@@ -28,6 +33,18 @@ public class Main {
                 RepositorioConfiguracion repositorioConfiguracion = new RepositorioConfiguracion(databaseManager);
 
                 RepositorioHistorialEnvios repositorioHistorialEnvios = new RepositorioHistorialEnvios(databaseManager);
+
+                RepositorioConfiguracionCorreo repositorioConfiguracionCorreo = new RepositorioConfiguracionCorreo(
+                                databaseManager);
+
+                CifradorCredenciales cifradorCredenciales = new CifradorCredenciales();
+
+                ProtectorClave protectorClave = new ProtectorClaveWindowsDpapi();
+
+                ServicioCredencialesCorreo servicioCredencialesCorreo = new ServicioCredencialesCorreo(
+                                repositorioConfiguracionCorreo,
+                                cifradorCredenciales,
+                                protectorClave);
 
                 String codigoDocumento = repositorioConfiguracion.obtenerCodigoDocumento();
 
@@ -51,7 +68,8 @@ public class Main {
 
                 ServicioDocumentos servicioDocumentos = new ServicioDocumentos(repositorioConfiguracion);
 
-                ServicioCorreo servicioCorreo = new ServicioCorreoDiferido();
+                ServicioCorreo servicioCorreo = new ServicioCorreoDiferido(
+                                servicioCredencialesCorreo);
 
                 ServicioPreparacionEnvios servicioPreparacionEnvios = new ServicioPreparacionEnvios(
                                 servicioDocumentos,
@@ -72,6 +90,7 @@ public class Main {
 
                         MenuConfiguracion menuConfiguracion = new MenuConfiguracion(
                                         repositorioConfiguracion,
+                                        servicioCredencialesCorreo,
                                         servicioCorreo,
                                         scanner);
 

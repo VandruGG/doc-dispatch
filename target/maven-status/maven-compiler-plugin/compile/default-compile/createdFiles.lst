@@ -9,7 +9,6 @@ com\vandrugg\docdispatch\ui\MenuProcesamientoDocumentos.class
 com\vandrugg\docdispatch\model\PreparacionEnvio.class
 com\vandrugg\docdispatch\ui\MenuPrincipal.class
 com\vandrugg\docdispatch\config\ConfiguracionCorreoFactory.class
-com\vandrugg\docdispatch\Main.class
 com\vandrugg\docdispatch\ui\MenuDestinatarios.class
 com\vandrugg\docdispatch\service\IdentificadorPorCodigo.class
 com\vandrugg\docdispatch\service\ServicioCorreoJakartaMail.class
