@@ -9,6 +9,7 @@ public class MenuPrincipal {
     private final MenuProcesamientoDocumentos menuProcesamientoDocumentos;
     private final MenuConfiguracion menuConfiguracion;
     private final MenuHistorial menuHistorial;
+    private final MenuManual menuManual;
     private final Scanner scanner;
 
     public MenuPrincipal(
@@ -16,11 +17,13 @@ public class MenuPrincipal {
             MenuProcesamientoDocumentos menuProcesamientoDocumentos,
             MenuConfiguracion menuConfiguracion,
             MenuHistorial menuHistorial,
+            MenuManual menuManual,
             Scanner scanner) {
         this.menuDestinatarios = menuDestinatarios;
         this.menuProcesamientoDocumentos = menuProcesamientoDocumentos;
         this.menuConfiguracion = menuConfiguracion;
         this.menuHistorial = menuHistorial;
+        this.menuManual = menuManual;
         this.scanner = new Scanner(System.in);
     }
 
@@ -38,6 +41,7 @@ public class MenuPrincipal {
             System.out.println("2. Procesar documentos");
             System.out.println("3. Consultar historial");
             System.out.println("4. Configuracion");
+            System.out.println("5. Manual de uso");
             System.out.println("0. Salir");
             System.out.println();
             System.out.print("Seleccione una opcion: ");
@@ -52,6 +56,8 @@ public class MenuPrincipal {
                 case "3" -> menuHistorial.mostrar();
 
                 case "4" -> menuConfiguracion.mostrar();
+
+                case "5" -> menuManual.mostrar();
 
                 case "0" -> salir = true;
 

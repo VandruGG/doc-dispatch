@@ -415,6 +415,12 @@ public class MenuConfiguracion {
 
     private String leerPassword() {
 
+        System.out.println();
+        System.out.println(
+                "Por seguridad, la contraseña no se mostrara mientras escribe.");
+        System.out.println(
+                "Escribala normalmente y presione ENTER al finalizar.");
+
         if (System.console() != null) {
 
             char[] password = System.console().readPassword(

@@ -25,13 +25,16 @@ public class MenuDestinatarios {
         while (!salir) {
             limpiarPantalla();
 
+            System.out.println("================================");
+            System.out.println("   GESTION DE DESTINATARIOS");
+            System.out.println("================================");
             System.out.println();
-            System.out.println("=== GESTION DE DESTINATARIOS ===");
             System.out.println("1. Agregar o reactivar destinatario");
             System.out.println("2. Listar destinatarios");
             System.out.println("3. Buscar destinatarios por numero");
             System.out.println("4. Desactivar destinatario");
             System.out.println("0. Volver al menu principal");
+            System.out.println();
             System.out.print("Seleccione una opcion: ");
 
             String opcion = scanner.nextLine().trim();
@@ -49,6 +52,14 @@ public class MenuDestinatarios {
 
     private void agregarDestinatario() {
         try {
+
+            limpiarPantalla();
+
+            System.out.println("================================");
+            System.out.println("      AGREGAR DESTINATARIO");
+            System.out.println("================================");
+            System.out.println();
+
             int numeroDocumento = leerNumeroDocumento();
 
             System.out.println("Email: ");
@@ -65,6 +76,14 @@ public class MenuDestinatarios {
     }
 
     private void listarDestinatarios() {
+
+        limpiarPantalla();
+
+        System.out.println("================================");
+        System.out.println("      LISTAR DESTINATARIOS");
+        System.out.println("================================");
+        System.out.println();
+
         List<Destinatario> destinatarios = repositorio.listarDestinatarios();
 
         if (destinatarios.isEmpty()) {
@@ -85,6 +104,14 @@ public class MenuDestinatarios {
     }
 
     private void buscarDestinatarios() {
+
+        limpiarPantalla();
+
+        System.out.println("================================");
+        System.out.println("      BUSCAR DESTINATARIOS");
+        System.out.println("================================");
+        System.out.println();
+
         try {
             int numeroDocumento = leerNumeroDocumento();
 
@@ -111,6 +138,14 @@ public class MenuDestinatarios {
     }
 
     private void desactivarDestinatario() {
+
+        limpiarPantalla();
+
+        System.out.println("================================");
+        System.out.println("    DESACTIVAR DESTINATARIO");
+        System.out.println("================================");
+        System.out.println();
+
         try {
             int numeroDocumento = leerNumeroDocumento();
 

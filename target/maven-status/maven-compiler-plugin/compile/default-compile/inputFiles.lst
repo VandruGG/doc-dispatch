@@ -23,6 +23,7 @@ C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispa
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\model\ConfiguracionCorreo.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\enums\EstadoEnvio.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\repository\RepositorioConfiguracionCorreo.java
+C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\ui\MenuManual.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\enums\ProveedorCorreo.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\service\ServicioCredencialesCorreo.java
 C:\Users\Andres\proyectosVandru\doc-dispatch\src\main\java\com\vandrugg\docdispatch\ui\MenuDestinatarios.java

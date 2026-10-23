@@ -18,6 +18,7 @@ import com.vandrugg.docdispatch.service.ServicioCredencialesCorreo;
 import com.vandrugg.docdispatch.ui.MenuConfiguracion;
 import com.vandrugg.docdispatch.ui.MenuDestinatarios;
 import com.vandrugg.docdispatch.ui.MenuHistorial;
+import com.vandrugg.docdispatch.ui.MenuManual;
 import com.vandrugg.docdispatch.ui.MenuPrincipal;
 import com.vandrugg.docdispatch.ui.MenuProcesamientoDocumentos;
 
@@ -98,11 +99,14 @@ public class Main {
                                         repositorioHistorialEnvios,
                                         scanner);
 
+                        MenuManual menuManual = new MenuManual(scanner);
+
                         MenuPrincipal menuPrincipal = new MenuPrincipal(
                                         menuDestinatarios,
                                         menuProcesamientoDocumentos,
                                         menuConfiguracion,
                                         menuHistorial,
+                                        menuManual,
                                         scanner);
 
                         menuPrincipal.mostrar();
