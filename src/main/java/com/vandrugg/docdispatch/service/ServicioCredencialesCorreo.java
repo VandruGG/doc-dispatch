@@ -94,8 +94,9 @@ public class ServicioCredencialesCorreo {
 
         } catch (RuntimeException e) {
             throw new IllegalStateException(
-                    "No se puedieron recuperar las credenciales de correo. "
-                            + "Puede que pertenezcan a otro usuario o equipo.",
+                    "No se pudieron recuperar las credenciales de correo. "
+                            + "Puede que pertenezcan a otro usuario, equipo "
+                            + "o que los datos almacenados esten dañados.",
                     e);
         }
     }
