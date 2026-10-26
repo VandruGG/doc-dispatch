@@ -145,7 +145,7 @@ public class MenuManual {
                 System.out.println("8. Revisar los resultados.");
                 System.out.println("9. Realizar el envio real.");
                 System.out.println("10. Consultar el historial si es necesario.");
-
+                System.out.println();
                 System.out.println(
                                 "DocDispatch incluye valores iniciales para el codigo "
                                                 + "de documento, el asunto y el cuerpo del correo.");
@@ -184,13 +184,83 @@ public class MenuManual {
                 System.out.println(
                                 "Debe ingresar el correo o usuario SMTP y la");
                 System.out.println(
-                                "contraseña o App Password correspondiente.");
+                                "credencial correspondiente al proveedor.");
+                System.out.println();
+
+                System.out.println("GMAIL");
+                System.out.println("----------------------------------------");
+                System.out.println(
+                                "No utilice la contraseña normal de su cuenta");
+                System.out.println(
+                                "de Google.");
                 System.out.println();
 
                 System.out.println(
-                                "La contraseña no se muestra mientras se escribe");
+                                "DocDispatch necesita una Contraseña de Aplicacion");
                 System.out.println(
-                                "cuando la consola lo permite.");
+                                "(App Password) generada desde la seguridad");
+                System.out.println(
+                                "de su cuenta de Google.");
+                System.out.println();
+
+                System.out.println(
+                                "Para generar una App Password debe tener activada");
+                System.out.println(
+                                "la verificacion en dos pasos de Google.");
+                System.out.println();
+
+                System.out.println(
+                                "Consulte la ayuda oficial de Google sobre");
+                System.out.println(
+                                "Contraseñas de Aplicacion.");
+                System.out.println();
+
+                System.out.println("OUTLOOK / MICROSOFT");
+                System.out.println("----------------------------------------");
+                System.out.println(
+                                "Microsoft utiliza actualmente autenticacion moderna");
+                System.out.println(
+                                "(OAuth2) para muchas cuentas de Outlook y");
+                System.out.println(
+                                "Microsoft 365.");
+                System.out.println();
+
+                System.out.println(
+                                "Algunas cuentas Microsoft con verificacion en dos");
+                System.out.println(
+                                "pasos permiten generar una Contraseña de Aplicacion.");
+                System.out.println();
+
+                System.out.println(
+                                "Sin embargo, esta opcion puede no estar disponible");
+                System.out.println(
+                                "en cuentas empresariales, educativas o cuando");
+                System.out.println(
+                                "la autenticacion SMTP basica esta deshabilitada.");
+                System.out.println();
+
+                System.out.println(
+                                "Si Outlook rechaza la contraseña, consulte primero");
+                System.out.println(
+                                "la configuracion de seguridad de su cuenta Microsoft");
+                System.out.println(
+                                "y la documentacion oficial sobre App Passwords.");
+                System.out.println();
+
+                System.out.println("SMTP PERSONALIZADO");
+                System.out.println("----------------------------------------");
+                System.out.println(
+                                "Para otros proveedores utilice la contraseña SMTP");
+                System.out.println(
+                                "o contraseña de aplicacion indicada por el");
+                System.out.println(
+                                "proveedor del servicio.");
+                System.out.println();
+
+                System.out.println(
+                                "Por seguridad, la contraseña no se muestra mientras");
+                System.out.println(
+                                "se escribe cuando la consola lo permite.");
                 System.out.println();
 
                 System.out.println(
@@ -200,9 +270,9 @@ public class MenuManual {
                 System.out.println();
 
                 System.out.println(
-                                "La configuracion queda almacenada para futuros");
+                                "La configuracion queda almacenada de forma protegida");
                 System.out.println(
-                                "usos de DocDispatch.");
+                                "para futuros usos de DocDispatch.");
 
                 pausar();
         }

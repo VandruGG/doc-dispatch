@@ -497,6 +497,31 @@ public class MenuConfiguracion {
 
                 System.out.println();
                 System.out.println(
+                                "Ingrese la contraseña utilizada por el servidor SMTP.");
+
+                System.out.println();
+
+                System.out.println(
+                                "IMPORTANTE PARA GMAIL:");
+
+                System.out.println(
+                                "No utilice la contraseña normal de su cuenta de Google.");
+
+                System.out.println(
+                                "Debe utilizar una Contraseña de Aplicacion (App Password)");
+
+                System.out.println(
+                                "generada desde la configuracion de seguridad de Google.");
+
+                System.out.println();
+
+                System.out.println(
+                                "Ayuda oficial de Google:");
+
+                System.out.println(
+                                "https://support.google.com/mail/answer/185833?hl=es");
+                System.out.println();
+                System.out.println(
                                 "Por seguridad, la contraseña no se mostrara mientras escribe.");
                 System.out.println(
                                 "Escribala normalmente y presione ENTER al finalizar.");
@@ -504,7 +529,7 @@ public class MenuConfiguracion {
                 if (System.console() != null) {
 
                         char[] password = System.console().readPassword(
-                                        "Contraseña / App Password: ");
+                                        "Contraseña SMTP / App Password: ");
 
                         if (password == null) {
                                 return "";
@@ -514,7 +539,7 @@ public class MenuConfiguracion {
                 }
 
                 System.out.print(
-                                "Contraseña / App Password: ");
+                                "Contraseña SMTP / App Password: ");
 
                 return scanner.nextLine();
         }

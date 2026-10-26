@@ -294,6 +294,8 @@ public class MenuProcesamientoDocumentos {
 
             List<ResultadoEnvio> resultados = servicioPreparacionEnvios.enviar(carpeta);
 
+            limpiarPantalla();
+
             mostrarResultadosEnvio(resultados);
 
         } catch (InvalidPathException e) {
@@ -311,7 +313,7 @@ public class MenuProcesamientoDocumentos {
     private void mostrarResultadosEnvio(
             List<ResultadoEnvio> resultados) {
 
-        System.out.println();
+        System.out.println("=======================");
         System.out.println("RESULTADO DE LOS ENVIOS");
         System.out.println("=======================");
 
