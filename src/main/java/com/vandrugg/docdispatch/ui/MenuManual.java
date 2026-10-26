@@ -136,8 +136,8 @@ public class MenuManual {
                 System.out.println();
 
                 System.out.println("1. Configurar la cuenta de correo.");
-                System.out.println("2. Configurar el codigo de documento.");
-                System.out.println("3. Configurar asunto y cuerpo del correo.");
+                System.out.println("2. Revisar codigo, asunto y cuerpo configurados.");
+                System.out.println("3. Modificarlos solo si es necesario.");
                 System.out.println("4. Registrar los destinatarios.");
                 System.out.println("5. Preparar los archivos.");
                 System.out.println("6. Analizar la carpeta.");
@@ -146,6 +146,16 @@ public class MenuManual {
                 System.out.println("9. Realizar el envio real.");
                 System.out.println("10. Consultar el historial si es necesario.");
 
+                System.out.println(
+                                "DocDispatch incluye valores iniciales para el codigo "
+                                                + "de documento, el asunto y el cuerpo del correo.");
+                System.out.println();
+
+                System.out.println(
+                                "Revise esos valores antes de comenzar y cambielos "
+                                                + "solamente si no se ajustan a sus necesidades.");
+                System.out.println();
+
                 pausar();
         }
 
@@ -153,43 +163,46 @@ public class MenuManual {
 
                 limpiarPantalla();
 
-                System.out.println("================================");
-                System.out.println("      CONFIGURAR CORREO");
-                System.out.println("================================");
+                System.out.println("========================================");
+                System.out.println("          CONFIGURAR CORREO");
+                System.out.println("========================================");
                 System.out.println();
 
                 System.out.println(
-                                "Ingrese a Configuracion > Configurar cuenta de correo.");
+                                "Antes de realizar envios reales debe configurar");
+                System.out.println(
+                                "la cuenta de correo que utilizara DocDispatch.");
                 System.out.println();
 
                 System.out.println(
-                                "Seleccione el proveedor e ingrese:");
-                System.out.println("- Usuario o direccion de correo.");
-                System.out.println("- Contraseña o App Password.");
+                                "Desde el menu Configuracion puede seleccionar:");
+                System.out.println("- Gmail.");
+                System.out.println("- Outlook.");
+                System.out.println("- SMTP personalizado.");
                 System.out.println();
 
                 System.out.println(
-                                "Por seguridad, la contraseña no se muestra mientras");
+                                "Debe ingresar el correo o usuario SMTP y la");
                 System.out.println(
-                                "se escribe.");
+                                "contraseña o App Password correspondiente.");
                 System.out.println();
 
                 System.out.println(
-                                "Las credenciales quedan almacenadas de forma");
+                                "La contraseña no se muestra mientras se escribe");
                 System.out.println(
-                                "protegida en la computadora.");
+                                "cuando la consola lo permite.");
                 System.out.println();
 
                 System.out.println(
-                                "No es necesario volver a ingresarlas cada vez que");
+                                "Una vez guardada la cuenta, utilice la opcion");
                 System.out.println(
-                                "se inicia DocDispatch.");
+                                "\"Probar conexion de correo\" antes del primer envio.");
                 System.out.println();
 
                 System.out.println(
-                                "Utilice 'Probar conexion de correo' para verificar");
+                                "La configuracion queda almacenada para futuros");
                 System.out.println(
-                                "que la configuracion sea correcta.");
+                                "usos de DocDispatch.");
 
                 pausar();
         }
@@ -198,48 +211,61 @@ public class MenuManual {
 
                 limpiarPantalla();
 
-                System.out.println("================================");
-                System.out.println("  CONFIGURAR DOCUMENTOS Y MENSAJE");
-                System.out.println("================================");
+                System.out.println("========================================");
+                System.out.println("   CONFIGURAR DOCUMENTOS Y MENSAJE");
+                System.out.println("========================================");
                 System.out.println();
 
                 System.out.println(
-                                "DocDispatch utiliza un codigo configurable de");
+                                "DocDispatch incluye un codigo de documento,");
                 System.out.println(
-                                "exactamente tres letras para identificar archivos.");
-                System.out.println();
-
-                System.out.println("Ejemplos de codigos:");
-                System.out.println("- LIQ");
-                System.out.println("- FAC");
-                System.out.println("- REC");
+                                "un asunto y un cuerpo iniciales.");
                 System.out.println();
 
                 System.out.println(
-                                "El codigo debe aparecer seguido del numero que");
+                                "Antes de modificarlos, revise los valores actuales");
                 System.out.println(
-                                "identifica al documento.");
-                System.out.println();
-
-                System.out.println("Ejemplo con codigo FAC:");
-                System.out.println("- FAC120.pdf");
-                System.out.println("- FAC120_anexo.pdf");
+                                "desde el menu Configuracion.");
                 System.out.println();
 
                 System.out.println(
-                                "Ambos archivos se agrupan como documento 120.");
+                                "Si los valores ya son adecuados para sus envios,");
+                System.out.println(
+                                "no es necesario cambiarlos.");
                 System.out.println();
 
                 System.out.println(
-                                "Desde Configuracion tambien puede definir:");
-                System.out.println("- Asunto del correo.");
-                System.out.println("- Cuerpo del correo.");
+                                "El codigo de documento debe contener exactamente");
+                System.out.println(
+                                "3 letras y se utiliza para identificar los archivos.");
+                System.out.println();
+
+                System.out.println("Ejemplo con el codigo LIQ:");
+                System.out.println();
+                System.out.println("LIQ166.pdf");
+                System.out.println("LIQ166_anexo.pdf");
                 System.out.println();
 
                 System.out.println(
-                                "Para finalizar la carga de un cuerpo de varias");
+                                "Ambos archivos corresponden al documento 166");
                 System.out.println(
-                                "lineas, escriba FIN en una linea separada.");
+                                "y se enviaran juntos.");
+                System.out.println();
+
+                System.out.println(
+                                "El asunto y el cuerpo configurados se utilizaran");
+                System.out.println(
+                                "en los correos enviados.");
+                System.out.println();
+
+                System.out.println(
+                                "El cuerpo del correo puede contener varias lineas.");
+                System.out.println(
+                                "Escriba el contenido linea por linea.");
+                System.out.println(
+                                "Cuando termine, escriba FIN en una linea separada");
+                System.out.println(
+                                "y presione ENTER para guardar el nuevo cuerpo.");
 
                 pausar();
         }

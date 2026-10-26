@@ -18,16 +18,28 @@ public final class DatabaseManager {
     }
 
     public static DatabaseManager produccion() {
-        Path carpetaData = Path.of("data");
+        String localAppData = System.getenv("LOCALAPPDATA");
 
-        try {
-            Files.createDirectories(carpetaData);
-        } catch (IOException e) {
+        if (localAppData == null || localAppData.isBlank()) {
             throw new IllegalStateException(
-                    "No se pudo crear la carpeta de datos.", e);
+                    "No se pudo determinar la carpeta LOCALAPPDATA de Windows.");
         }
 
-        Path archivoDb = carpetaData.resolve("docdispatch.db");
+        Path carpetaAplicacion = Path.of(
+                localAppData,
+                "DocDispatch");
+
+        try {
+            Files.createDirectories(carpetaAplicacion);
+
+        } catch (IOException e) {
+            throw new IllegalStateException(
+                    "No se pudo crear la carpeta de datos de DocDispatch.",
+                    e);
+        }
+
+        Path archivoDb = carpetaAplicacion.resolve(
+                "docdispatch.db");
 
         return new DatabaseManager(
                 "jdbc:sqlite:" + archivoDb);

@@ -174,7 +174,7 @@ public class ServicioPreparacionEnviosTest {
         }
 
         @Test
-        void debeEnvierDocumentosPreparados(
+        void debeEnviarDocumentosPreparados(
                         @TempDir Path carpeta) throws IOException {
 
                 configurarCorreoValido();
@@ -274,6 +274,196 @@ public class ServicioPreparacionEnviosTest {
                                 resultado.detalle());
         }
 
+        @Test
+        void debeConstruirSolicitudCorreoCompleta(
+                        @TempDir Path carpeta) throws IOException {
+
+                repositorioConfiguracion.guardarAsuntoCorreo(
+                                "Liquidacion mensual");
+
+                repositorioConfiguracion.guardarCuerpoCorreo(
+                                "Se adjunta la documentacion.");
+
+                Path archivo1 = Files.createFile(
+                                carpeta.resolve(
+                                                "LIQ166.pdf"));
+
+                Path archivo2 = Files.createFile(
+                                carpeta.resolve(
+                                                "LIQ166_anexo.pdf"));
+
+                repositorioDestinatarios.guardarDestinatario(
+                                166,
+                                "correo1@example.com");
+
+                repositorioDestinatarios.guardarDestinatario(
+                                166,
+                                "correo2@example.com");
+
+                servicioPreparacionEnvios.enviar(carpeta);
+
+                SolicitudCorreo solicitud = servicioCorreoFalso.ultimaSolicitud;
+
+                assertEquals(
+                                "Liquidacion mensual",
+                                solicitud.asunto());
+
+                assertEquals(
+                                "Se adjunta la documentacion.",
+                                solicitud.cuerpo());
+
+                assertEquals(
+                                2,
+                                solicitud.destinatarios().size());
+
+                assertTrue(
+                                solicitud.destinatarios()
+                                                .contains(
+                                                                "correo1@example.com"));
+
+                assertTrue(
+                                solicitud.destinatarios()
+                                                .contains(
+                                                                "correo2@example.com"));
+
+                assertEquals(
+                                2,
+                                solicitud.adjuntos().size());
+
+                assertTrue(
+                                solicitud.adjuntos()
+                                                .contains(archivo1));
+
+                assertTrue(
+                                solicitud.adjuntos()
+                                                .contains(archivo2));
+        }
+
+        @Test
+        void debeDevolverErrorSiFallaElEnvioDeCorreo(
+                        @TempDir Path carpeta) throws IOException {
+
+                configurarCorreoValido();
+
+                Files.createFile(
+                                carpeta.resolve("LIQ400.pdf"));
+
+                repositorioDestinatarios.guardarDestinatario(
+                                400,
+                                "correo@example.com");
+
+                servicioCorreoFalso.resultadoEnvio = new ResultadoEnvio(
+                                EstadoEnvio.ERROR,
+                                "Error SMTP simulado.");
+
+                List<ResultadoEnvio> resultados = servicioPreparacionEnvios.enviar(
+                                carpeta);
+
+                assertEquals(1, resultados.size());
+
+                assertEquals(
+                                EstadoEnvio.ERROR,
+                                resultados.get(0).estado());
+
+                assertTrue(
+                                resultados.get(0)
+                                                .detalle()
+                                                .contains(
+                                                                "Error SMTP simulado."));
+
+                assertEquals(
+                                1,
+                                servicioCorreoFalso.cantidadEnvios);
+        }
+
+        @Test
+        void debeRegistrarEnvioExitosoEnHistorial(
+                        @TempDir Path carpeta) throws IOException {
+
+                configurarCorreoValido();
+
+                Files.createFile(
+                                carpeta.resolve("LIQ500.pdf"));
+
+                Files.createFile(
+                                carpeta.resolve(
+                                                "LIQ500_anexo.pdf"));
+
+                repositorioDestinatarios.guardarDestinatario(
+                                500,
+                                "correo@example.com");
+
+                servicioPreparacionEnvios.enviar(carpeta);
+
+                var historial = repositorioHistorialEnvios.listar();
+
+                assertEquals(1, historial.size());
+
+                var registro = historial.get(0);
+
+                assertEquals(
+                                500,
+                                registro.numeroDocumento());
+
+                assertEquals(
+                                EstadoEnvio.ENVIADO,
+                                registro.estado());
+
+                assertTrue(
+                                registro.destinatarios()
+                                                .contains(
+                                                                "correo@example.com"));
+
+                assertTrue(
+                                registro.archivos()
+                                                .contains(
+                                                                "LIQ500.pdf"));
+
+                assertTrue(
+                                registro.archivos()
+                                                .contains(
+                                                                "LIQ500_anexo.pdf"));
+        }
+
+        @Test
+        void debeRegistrarErrorSmtpEnHistorial(
+                        @TempDir Path carpeta) throws IOException {
+
+                configurarCorreoValido();
+
+                Files.createFile(
+                                carpeta.resolve("LIQ600.pdf"));
+
+                repositorioDestinatarios.guardarDestinatario(
+                                600,
+                                "correo@example.com");
+
+                servicioCorreoFalso.resultadoEnvio = new ResultadoEnvio(
+                                EstadoEnvio.ERROR,
+                                "Servidor SMTP no disponible.");
+
+                servicioPreparacionEnvios.enviar(carpeta);
+
+                var historial = repositorioHistorialEnvios.listar();
+
+                assertEquals(1, historial.size());
+
+                var registro = historial.get(0);
+
+                assertEquals(
+                                600,
+                                registro.numeroDocumento());
+
+                assertEquals(
+                                EstadoEnvio.ERROR,
+                                registro.estado());
+
+                assertTrue(
+                                registro.detalle()
+                                                .contains(
+                                                                "Servidor SMTP no disponible."));
+        }
+
         private static class ServicioCorreoFalso implements ServicioCorreo {
 
                 private int cantidadEnvios;
@@ -282,17 +472,23 @@ public class ServicioPreparacionEnviosTest {
 
                 private List<Path> ultimosAdjuntos = new ArrayList<>();
 
+                private SolicitudCorreo ultimaSolicitud;
+                
+                private ResultadoEnvio resultadoEnvio = new ResultadoEnvio(
+                                EstadoEnvio.ENVIADO,
+                                "Envio simulado por test.");
+
                 @Override
                 public ResultadoEnvio enviar(SolicitudCorreo solicitud) {
                         cantidadEnvios++;
+
+                        ultimaSolicitud = solicitud;
 
                         ultimosDestinatarios = new ArrayList<>(solicitud.destinatarios());
 
                         ultimosAdjuntos = new ArrayList<>(solicitud.adjuntos());
 
-                        return new ResultadoEnvio(
-                                        EstadoEnvio.ENVIADO,
-                                        "Envio simulado por test.");
+                        return resultadoEnvio;
                 }
 
                 @Override
