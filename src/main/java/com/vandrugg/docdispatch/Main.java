@@ -1,5 +1,6 @@
 package com.vandrugg.docdispatch;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import com.vandrugg.docdispatch.database.DatabaseManager;
@@ -110,6 +111,23 @@ public class Main {
                                         scanner);
 
                         menuPrincipal.mostrar();
+                }
+        }
+
+        private static void configurarConsola() {
+                try {
+                        new ProcessBuilder(
+                                        "cmd",
+                                        "/c",
+                                        "mode con: cols=88 lines=42").inheritIO()
+                                        .start()
+                                        .waitFor();
+                } catch (IOException | InterruptedException e) {
+                        /*
+                         * El tamaño de la consola es solamente una mejora visual.
+                         * Si Windows no permite modificarlo, DocDispatch debe
+                         * continuar funcionando normalmente.
+                         */
                 }
         }
 }

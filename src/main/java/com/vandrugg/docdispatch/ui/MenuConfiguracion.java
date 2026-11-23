@@ -3,14 +3,14 @@ package com.vandrugg.docdispatch.ui;
 import java.io.IOException;
 import java.util.Scanner;
 
+import com.vandrugg.docdispatch.enums.ProveedorCorreo;
+import com.vandrugg.docdispatch.enums.SeguridadSmtp;
+import com.vandrugg.docdispatch.model.ResumenConfiguracionCorreo;
 import com.vandrugg.docdispatch.model.ResultadoConexionCorreo;
 import com.vandrugg.docdispatch.repository.RepositorioConfiguracion;
 import com.vandrugg.docdispatch.service.IdentificadorPorCodigo;
 import com.vandrugg.docdispatch.service.ServicioCorreo;
 import com.vandrugg.docdispatch.service.ServicioCredencialesCorreo;
-import com.vandrugg.docdispatch.enums.ProveedorCorreo;
-import com.vandrugg.docdispatch.model.ResumenConfiguracionCorreo;
-import com.vandrugg.docdispatch.enums.SeguridadSmtp;
 
 public class MenuConfiguracion {
 
@@ -52,9 +52,11 @@ public class MenuConfiguracion {
         }
 
         public void mostrar() {
+
                 boolean volver = false;
 
                 while (!volver) {
+
                         limpiarPantalla();
 
                         String codigoActual = repositorioConfiguracion.obtenerCodigoDocumento();
@@ -67,40 +69,65 @@ public class MenuConfiguracion {
                         System.out.println("          CONFIGURACION");
                         System.out.println("================================");
                         System.out.println();
+
                         System.out.println(
                                         "Codigo de documento actual: "
                                                         + codigoActual);
+
                         System.out.println();
-                        System.out.println("Asunto actual: "
-                                        + asuntoActual);
+
+                        System.out.println(
+                                        "Asunto actual: "
+                                                        + asuntoActual);
+
                         System.out.println();
+
                         System.out.println("Cuerpo actual:");
                         System.out.println(cuerpoActual);
 
                         System.out.println();
                         System.out.println();
+
                         System.out.println("1. Cambiar codigo de documento");
                         System.out.println("2. Cambiar asunto del correo");
                         System.out.println("3. Cambiar cuerpo del correo");
                         System.out.println("4. Configurar cuenta de correo");
                         System.out.println("5. Probar conexion de correo");
                         System.out.println("0. Volver al menu principal");
+
                         System.out.println();
-                        System.out.print("Seleccione una opcion: ");
+
+                        System.out.print(
+                                        "Seleccione una opcion: ");
 
                         String opcion = scanner.nextLine().trim();
 
                         switch (opcion) {
-                                case "1" -> cambiarCodigoDocumento();
-                                case "2" -> cambiarAsuntoCorreo();
-                                case "3" -> cambiarCuerpoCorreo();
-                                case "4" -> configurarCorreo();
-                                case "5" -> probarConexionCorreo();
-                                case "0" -> volver = true;
+
+                                case "1" ->
+                                        cambiarCodigoDocumento();
+
+                                case "2" ->
+                                        cambiarAsuntoCorreo();
+
+                                case "3" ->
+                                        cambiarCuerpoCorreo();
+
+                                case "4" ->
+                                        configurarCorreo();
+
+                                case "5" ->
+                                        probarConexionCorreo();
+
+                                case "0" ->
+                                        volver = true;
 
                                 default -> {
+
                                         System.out.println();
-                                        System.out.println("Opcion invalida.");
+                                        System.out.println(
+                                                        "Opcion invalida.");
+
                                         pausar();
                                 }
                         }
@@ -108,35 +135,54 @@ public class MenuConfiguracion {
         }
 
         private void cambiarCodigoDocumento() {
+
                 limpiarPantalla();
 
-                System.out.println("=== CAMBIAR CODIGO DE DOCUMENTO ===");
+                System.out.println(
+                                "=== CAMBIAR CODIGO DE DOCUMENTO ===");
+
                 System.out.println();
+
                 System.out.println(
                                 "El codigo debe contener exactamente 3 letras.");
+
                 System.out.println();
-                System.out.print("Nuevo codigo: ");
+
+                System.out.print(
+                                "Nuevo codigo: ");
 
                 String nuevoCodigo = scanner.nextLine().trim();
 
                 try {
-                        IdentificadorPorCodigo identificador = new IdentificadorPorCodigo(nuevoCodigo);
 
-                        repositorioConfiguracion.guardarCodigoDocumento(identificador.obtenerCodigo());
+                        IdentificadorPorCodigo identificador = new IdentificadorPorCodigo(
+                                        nuevoCodigo);
+
+                        repositorioConfiguracion
+                                        .guardarCodigoDocumento(
+                                                        identificador.obtenerCodigo());
 
                         System.out.println();
+
                         System.out.println(
                                         "Codigo actualizado correctamente a: "
                                                         + identificador.obtenerCodigo());
 
                         System.out.println();
+
                         System.out.println(
-                                        "El nuevo codigo se utilizara en el procesamiento de documentos.");
+                                        "El nuevo codigo se utilizara en el "
+                                                        + "procesamiento de documentos.");
+
                 } catch (IllegalArgumentException e) {
+
                         System.out.println();
+
                         System.out.println(
-                                        "Error: " + e.getMessage());
+                                        "Error: "
+                                                        + e.getMessage());
                 }
+
                 pausar();
         }
 
@@ -161,17 +207,22 @@ public class MenuConfiguracion {
                 String nuevoAsunto = scanner.nextLine().trim();
 
                 if (nuevoAsunto.isBlank()) {
+
                         System.out.println();
+
                         System.out.println(
                                         "Se mantiene el asunto actual.");
+
                         pausar();
                         return;
                 }
 
                 repositorioConfiguracion
-                                .guardarAsuntoCorreo(nuevoAsunto);
+                                .guardarAsuntoCorreo(
+                                                nuevoAsunto);
 
                 System.out.println();
+
                 System.out.println(
                                 "Asunto actualizado correctamente.");
 
@@ -202,6 +253,7 @@ public class MenuConfiguracion {
                 if (!respuesta.equalsIgnoreCase("S")) {
 
                         System.out.println();
+
                         System.out.println(
                                         "Se mantiene el cuerpo actual.");
 
@@ -210,10 +262,13 @@ public class MenuConfiguracion {
                 }
 
                 System.out.println();
+
                 System.out.println(
                                 "Ingrese el nuevo cuerpo del correo.");
+
                 System.out.println(
                                 "Escriba FIN en una linea separada para finalizar.");
+
                 System.out.println();
 
                 StringBuilder cuerpo = new StringBuilder();
@@ -227,7 +282,8 @@ public class MenuConfiguracion {
                         }
 
                         if (!cuerpo.isEmpty()) {
-                                cuerpo.append(System.lineSeparator());
+                                cuerpo.append(
+                                                System.lineSeparator());
                         }
 
                         cuerpo.append(linea);
@@ -238,6 +294,7 @@ public class MenuConfiguracion {
                 if (nuevoCuerpo.isBlank()) {
 
                         System.out.println();
+
                         System.out.println(
                                         "El cuerpo no puede quedar vacio.");
 
@@ -246,9 +303,11 @@ public class MenuConfiguracion {
                 }
 
                 repositorioConfiguracion
-                                .guardarCuerpoCorreo(nuevoCuerpo);
+                                .guardarCuerpoCorreo(
+                                                nuevoCuerpo);
 
                 System.out.println();
+
                 System.out.println(
                                 "Cuerpo actualizado correctamente.");
 
@@ -264,20 +323,27 @@ public class MenuConfiguracion {
                 System.out.println("================================");
                 System.out.println();
 
-                System.out.println();
-                System.out.println("Probando conexion con el servidor de correo...");
+                System.out.println(
+                                "Probando conexion con el servidor de correo...");
 
                 ResultadoConexionCorreo resultado = servicioCorreo.probarConexion();
 
                 System.out.println();
 
                 if (resultado.exitosa()) {
-                        System.out.println("Conexion realizada correctamente.");
+
+                        System.out.println(
+                                        "Conexion realizada correctamente.");
+
                 } else {
-                        System.out.println("No se pudo establecer la conexion.");
+
+                        System.out.println(
+                                        "No se pudo establecer la conexion.");
                 }
 
-                System.out.println("Detalle: " + resultado.detalle());
+                System.out.println(
+                                "Detalle: "
+                                                + resultado.detalle());
 
                 pausar();
         }
@@ -286,20 +352,27 @@ public class MenuConfiguracion {
 
                 limpiarPantalla();
 
-                System.out.println("=== CONFIGURACION DE CORREO ===");
+                System.out.println(
+                                "=== CONFIGURACION DE CORREO ===");
+
                 System.out.println();
 
                 ResumenConfiguracionCorreo actual = servicioCredencialesCorreo.obtenerResumen();
 
                 if (actual == null) {
-                        System.out.println(
-                                        "No existe una cuenta de correo configurada.");
-                } else {
-                        System.out.println(
-                                        "Proveedor: " + actual.proveedor());
 
                         System.out.println(
-                                        "Usuario: " + actual.usuario());
+                                        "No existe una cuenta de correo configurada.");
+
+                } else {
+
+                        System.out.println(
+                                        "Proveedor: "
+                                                        + actual.proveedor());
+
+                        System.out.println(
+                                        "Usuario: "
+                                                        + actual.usuario());
 
                         System.out.println(
                                         "Servidor: "
@@ -313,17 +386,21 @@ public class MenuConfiguracion {
                 }
 
                 System.out.println();
+
                 System.out.println("1. Gmail");
-                System.out.println("2. Outlook");
+                System.out.println("2. Outlook / Microsoft");
                 System.out.println("3. SMTP personalizado");
                 System.out.println("0. Cancelar");
+
                 System.out.println();
 
-                System.out.print("Seleccione proveedor: ");
+                System.out.print(
+                                "Seleccione proveedor: ");
 
                 String opcion = scanner.nextLine().trim();
 
                 switch (opcion) {
+
                         case "1" ->
                                 configurarProveedor(
                                                 ProveedorCorreo.GMAIL);
@@ -353,9 +430,13 @@ public class MenuConfiguracion {
                 System.out.println();
 
                 System.out.println(
-                                "Proveedor: " + proveedor.name());
+                                "Proveedor: "
+                                                + proveedor.name());
 
                 System.out.println();
+
+                mostrarInformacionCredenciales(
+                                proveedor);
 
                 System.out.print(
                                 "Correo / usuario SMTP: ");
@@ -375,24 +456,40 @@ public class MenuConfiguracion {
                                         proveedor.seguridad());
 
                         System.out.println();
+
                         System.out.println(
                                         "Configuracion guardada correctamente.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "Se recomienda utilizar ahora la opcion");
+
+                        System.out.println(
+                                        "\"Probar conexion de correo\".");
 
                 } catch (IllegalArgumentException
                                 | IllegalStateException e) {
 
                         System.out.println();
+
                         System.out.println(
-                                        "Error: " + e.getMessage());
+                                        "Error: "
+                                                        + e.getMessage());
                 }
         }
 
         private void configurarProveedorPersonalizado() {
 
                 System.out.println();
+
                 System.out.println(
                                 "=== SMTP PERSONALIZADO ===");
+
                 System.out.println();
+
+                mostrarInformacionCredenciales(
+                                ProveedorCorreo.PERSONALIZADO);
 
                 System.out.print(
                                 "Correo / usuario SMTP: ");
@@ -412,8 +509,8 @@ public class MenuConfiguracion {
                 String puertoTexto = scanner.nextLine().trim();
 
                 System.out.println();
-                System.out.println(
-                                "Seguridad:");
+
+                System.out.println("Seguridad:");
 
                 System.out.println(
                                 "1. STARTTLS");
@@ -435,6 +532,7 @@ public class MenuConfiguracion {
                                         puertoTexto);
 
                         var seguridad = switch (opcionSeguridad) {
+
                                 case "1" ->
                                         SeguridadSmtp.STARTTLS;
 
@@ -458,12 +556,22 @@ public class MenuConfiguracion {
                                         seguridad);
 
                         System.out.println();
+
                         System.out.println(
                                         "Configuracion guardada correctamente.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "Se recomienda utilizar ahora la opcion");
+
+                        System.out.println(
+                                        "\"Probar conexion de correo\".");
 
                 } catch (NumberFormatException e) {
 
                         System.out.println();
+
                         System.out.println(
                                         "El puerto debe ser numerico.");
 
@@ -471,60 +579,148 @@ public class MenuConfiguracion {
                                 | IllegalStateException e) {
 
                         System.out.println();
+
                         System.out.println(
-                                        "Error: " + e.getMessage());
+                                        "Error: "
+                                                        + e.getMessage());
                 }
         }
 
-        private void pausar() {
+        private void mostrarInformacionCredenciales(
+                        ProveedorCorreo proveedor) {
+
+                if (proveedor == ProveedorCorreo.GMAIL) {
+
+                        System.out.println(
+                                        "IMPORTANTE PARA GMAIL");
+
+                        System.out.println(
+                                        "----------------------------------------");
+
+                        System.out.println(
+                                        "No utilice la contraseña normal de su");
+
+                        System.out.println(
+                                        "cuenta de Google.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "Debe utilizar una Contraseña de Aplicacion");
+
+                        System.out.println(
+                                        "(App Password) generada desde la seguridad");
+
+                        System.out.println(
+                                        "de su cuenta Google.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "Para crearla debe tener activada la");
+
+                        System.out.println(
+                                        "verificacion en dos pasos.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "Ayuda oficial:");
+
+                        System.out.println(
+                                        "https://support.google.com/accounts/answer/185833?hl=es");
+
+                        System.out.println();
+
+                        return;
+                }
+
+                if (proveedor == ProveedorCorreo.OUTLOOK) {
+
+                        System.out.println(
+                                        "IMPORTANTE PARA OUTLOOK / MICROSOFT");
+
+                        System.out.println(
+                                        "----------------------------------------");
+
+                        System.out.println(
+                                        "Algunas cuentas Microsoft con verificacion");
+
+                        System.out.println(
+                                        "en dos pasos permiten utilizar una");
+
+                        System.out.println(
+                                        "Contraseña de Aplicacion.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "Microsoft utiliza autenticacion moderna");
+
+                        System.out.println(
+                                        "(OAuth2) en muchas cuentas.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "DocDispatch 1.0 utiliza autenticacion SMTP");
+
+                        System.out.println(
+                                        "mediante usuario y contraseña.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "Por este motivo, algunas cuentas Outlook");
+
+                        System.out.println(
+                                        "o Microsoft 365 pueden no ser compatibles.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "En cuentas empresariales o educativas");
+
+                        System.out.println(
+                                        "tambien puede depender del administrador.");
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "Ayuda oficial:");
+
+                        System.out.println(
+                                        "https://support.microsoft.com/es-es/account-billing/");
+
+                        System.out.println();
+
+                        return;
+                }
+
+                System.out.println(
+                                "CREDENCIALES SMTP");
+
+                System.out.println(
+                                "----------------------------------------");
+
+                System.out.println(
+                                "Utilice la contraseña SMTP o contraseña");
+
+                System.out.println(
+                                "de aplicacion indicada por su proveedor.");
+
                 System.out.println();
-                System.out.println("Presione ENTER para continuar...");
-                scanner.nextLine();
-        }
-
-        private void limpiarPantalla() {
-                try {
-                        new ProcessBuilder("cmd", "/c", "cls")
-                                        .inheritIO()
-                                        .start()
-                                        .waitFor();
-
-                } catch (IOException | InterruptedException e) {
-                }
         }
 
         private String leerPassword() {
 
-                System.out.println();
                 System.out.println(
-                                "Ingrese la contraseña utilizada por el servidor SMTP.");
+                                "Por seguridad, la contraseña no se mostrara");
+
+                System.out.println(
+                                "mientras escribe cuando la consola lo permita.");
 
                 System.out.println();
-
-                System.out.println(
-                                "IMPORTANTE PARA GMAIL:");
-
-                System.out.println(
-                                "No utilice la contraseña normal de su cuenta de Google.");
-
-                System.out.println(
-                                "Debe utilizar una Contraseña de Aplicacion (App Password)");
-
-                System.out.println(
-                                "generada desde la configuracion de seguridad de Google.");
-
-                System.out.println();
-
-                System.out.println(
-                                "Ayuda oficial de Google:");
-
-                System.out.println(
-                                "https://support.google.com/mail/answer/185833?hl=es");
-                System.out.println();
-                System.out.println(
-                                "Por seguridad, la contraseña no se mostrara mientras escribe.");
-                System.out.println(
-                                "Escribala normalmente y presione ENTER al finalizar.");
 
                 if (System.console() != null) {
 
@@ -542,5 +738,34 @@ public class MenuConfiguracion {
                                 "Contraseña SMTP / App Password: ");
 
                 return scanner.nextLine();
+        }
+
+        private void pausar() {
+
+                System.out.println();
+
+                System.out.println(
+                                "Presione ENTER para continuar...");
+
+                scanner.nextLine();
+        }
+
+        private void limpiarPantalla() {
+
+                try {
+
+                        new ProcessBuilder(
+                                        "cmd",
+                                        "/c",
+                                        "cls")
+                                        .inheritIO()
+                                        .start()
+                                        .waitFor();
+
+                } catch (IOException
+                                | InterruptedException e) {
+
+                        // La limpieza de pantalla es solo una mejora visual.
+                }
         }
 }

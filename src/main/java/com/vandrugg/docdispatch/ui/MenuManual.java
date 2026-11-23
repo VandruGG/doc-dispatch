@@ -177,7 +177,7 @@ public class MenuManual {
                 System.out.println(
                                 "Desde el menu Configuracion puede seleccionar:");
                 System.out.println("- Gmail.");
-                System.out.println("- Outlook.");
+                System.out.println("- Outlook / Microsoft.");
                 System.out.println("- SMTP personalizado.");
                 System.out.println();
 
@@ -198,53 +198,70 @@ public class MenuManual {
                 System.out.println(
                                 "DocDispatch necesita una Contraseña de Aplicacion");
                 System.out.println(
-                                "(App Password) generada desde la seguridad");
-                System.out.println(
-                                "de su cuenta de Google.");
+                                "(App Password) generada desde su cuenta Google.");
                 System.out.println();
 
                 System.out.println(
-                                "Para generar una App Password debe tener activada");
+                                "Para crearla debe tener activada la verificacion");
                 System.out.println(
-                                "la verificacion en dos pasos de Google.");
+                                "en dos pasos.");
                 System.out.println();
 
                 System.out.println(
-                                "Consulte la ayuda oficial de Google sobre");
+                                "Ayuda oficial de Google:");
                 System.out.println(
-                                "Contraseñas de Aplicacion.");
+                                "https://support.google.com/accounts/answer/185833");
+                System.out.println();
+
+                System.out.println(
+                                "Desde esa pagina puede consultar como generar");
+                System.out.println(
+                                "y utilizar una Contraseña de Aplicacion.");
                 System.out.println();
 
                 System.out.println("OUTLOOK / MICROSOFT");
                 System.out.println("----------------------------------------");
                 System.out.println(
-                                "Microsoft utiliza actualmente autenticacion moderna");
+                                "Algunas cuentas Microsoft con verificacion en");
                 System.out.println(
-                                "(OAuth2) para muchas cuentas de Outlook y");
+                                "dos pasos permiten utilizar una Contraseña");
                 System.out.println(
-                                "Microsoft 365.");
+                                "de Aplicacion.");
                 System.out.println();
 
                 System.out.println(
-                                "Algunas cuentas Microsoft con verificacion en dos");
+                                "Ayuda oficial de Microsoft:");
                 System.out.println(
-                                "pasos permiten generar una Contraseña de Aplicacion.");
+                                "https://support.microsoft.com/es-es/accounts-billing/"
+                                                + "manage/how-to-get-and-use-app-passwords");
                 System.out.println();
 
                 System.out.println(
-                                "Sin embargo, esta opcion puede no estar disponible");
+                                "IMPORTANTE:");
                 System.out.println(
-                                "en cuentas empresariales, educativas o cuando");
+                                "Microsoft utiliza autenticacion moderna (OAuth2)");
                 System.out.println(
-                                "la autenticacion SMTP basica esta deshabilitada.");
+                                "en muchas cuentas de Outlook y Microsoft 365.");
                 System.out.println();
 
                 System.out.println(
-                                "Si Outlook rechaza la contraseña, consulte primero");
+                                "DocDispatch 1.0 utiliza autenticacion SMTP");
                 System.out.println(
-                                "la configuracion de seguridad de su cuenta Microsoft");
+                                "mediante usuario y contraseña.");
+                System.out.println();
+
                 System.out.println(
-                                "y la documentacion oficial sobre App Passwords.");
+                                "Por este motivo, algunas cuentas Microsoft pueden");
+                System.out.println(
+                                "no ser compatibles con esta version.");
+                System.out.println();
+
+                System.out.println(
+                                "En cuentas empresariales o educativas, la");
+                System.out.println(
+                                "disponibilidad tambien puede depender de la");
+                System.out.println(
+                                "configuracion realizada por el administrador.");
                 System.out.println();
 
                 System.out.println("SMTP PERSONALIZADO");
