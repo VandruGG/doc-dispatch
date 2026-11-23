@@ -7,7 +7,7 @@
     <groupId>com.vandrugg.docdispatch</groupId>
     <artifactId>doc-dispatch</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <name>DocDispatch</name>
     <description>Aplicación para procesamiento y distribución automatizada de documentos por correo electrónico</description>
